@@ -21,27 +21,24 @@ public class TurnServo extends LinearOpMode {
 
         while (opModeIsActive()){
 
-            while (opModeIsActive()) {
+            if(gamepad1.dpad_left || gamepad2.dpad_left){
+                //turn the servo to the min rotation
+                servo_1.setPosition(minrot);
+                currentstate = "minimal rotation";
 
-                if(gamepad1.dpad_left || gamepad2.dpad_left){
-                    //turn the servo to the min rotation
-                    servo_1.setPosition(minrot);
-                    currentstate = "minimal rotation";
+            }else if(gamepad1.dpad_up || gamepad2.dpad_up){
+                //turn the servo to the middle
+                servo_1.setPosition(middlerot);
+                currentstate = "middle rotation";
 
-                }else if(gamepad1.dpad_up || gamepad2.dpad_up){
-                    //turn the servo to the middle
-                    servo_1.setPosition(middlerot);
-                    currentstate = "middle rotation";
-
-                }else if(gamepad1.dpad_right || gamepad2.dpad_right){
-                    //turn the servo to the max rotation
-                    servo_1.setPosition(maxrot);
-                    currentstate = "maximal rotation";
-                }
-
-                telemetry.addData("State", currentstate);
-                telemetry.addData("Rotation", servo_1.getPosition());
+            }else if(gamepad1.dpad_right || gamepad2.dpad_right) {
+                //turn the servo to the max rotation
+                servo_1.setPosition(maxrot);
+                currentstate = "maximal rotation";
             }
+
+            telemetry.addData("State", currentstate);
+            telemetry.addData("Rotation", servo_1.getPosition());
         }
 
     }
