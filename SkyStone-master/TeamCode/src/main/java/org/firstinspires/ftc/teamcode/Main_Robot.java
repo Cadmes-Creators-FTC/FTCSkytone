@@ -112,11 +112,11 @@ public class Main_Robot extends LinearOpMode {
     //pickup block
     private void PickupBlock(){
 
-        if(gamepad2.right_stick_y > 0.1){
+        if(gamepad2.left_stick_y > 0.1){
             //turn the servo down
             pickupBlockRotation += pickupBlockRotationSpeed;
 
-        }else if(gamepad2.right_stick_y < -0.1){
+        }else if(gamepad2.left_stick_y < -0.1){
             //turn the servo up
             pickupBlockRotation -= pickupBlockRotationSpeed;
 
@@ -130,11 +130,11 @@ public class Main_Robot extends LinearOpMode {
     //pickup block
     private void PickupPlate(){
 
-        if(gamepad2.left_stick_y > 0.1){
+        if(gamepad2.right_stick_y > 0.1){
             //turn the servo down
             pickupPlateRotation += pickupPlateRotationSpeed;
 
-        }else if(gamepad2.left_stick_y < -0.1){
+        }else if(gamepad2.right_stick_y < -0.1){
             //turn the servo up
             pickupPlateRotation -= pickupPlateRotationSpeed;
 
