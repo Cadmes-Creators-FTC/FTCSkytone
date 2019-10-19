@@ -4,10 +4,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp
+@TeleOp(name = "Main_Robot", group = "MainGroup")
 public class Main_Robot extends LinearOpMode {
 
     //drive
@@ -47,10 +48,10 @@ public class Main_Robot extends LinearOpMode {
             //drive and turn
             DriveWithController();
 
-            //turn the pickupblock servo
+            //turn the pickup block servo
             PickupBlock();
 
-            //turn the pickupplate servo
+            //turn the pickup plate servo
             PickupPlate();
 
             telemetry.update();
@@ -67,6 +68,12 @@ public class Main_Robot extends LinearOpMode {
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
+
+        //set encoder mode
+        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //pickup block
         pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
