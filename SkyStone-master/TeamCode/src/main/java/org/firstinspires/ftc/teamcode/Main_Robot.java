@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -22,13 +21,8 @@ public class Main_Robot extends LinearOpMode {
 
     //pickupblock
     private Servo pickupBlockServo;
-    private float pickupBlockRotation = 0;
-    private float pickupBlockRotationSpeed = 0.004f;
-
-    //pickupplateservo
-    private Servo pickupPlateServo;
-    private float pickupPlateRotation = 0;
-    private float pickupPlateRotationSpeed = 0.004f;
+    private double pickupBlockServoPosition;
+    private DcMotor CraneMotor;
 
 
     @Override
@@ -48,12 +42,10 @@ public class Main_Robot extends LinearOpMode {
             //drive and turn
             DriveWithController();
 
-            //turn the pickup block servo
-            PickupBlock();
+            //Move the arm
+            Arm();
 
-            //turn the pickup plate servo
-            PickupPlate();
-
+            //update telemetry
             telemetry.update();
         }
 
@@ -77,9 +69,7 @@ public class Main_Robot extends LinearOpMode {
 
         //pickup block
         pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
-
-        //pickup plate
-        pickupPlateServo = hardwareMap.get(Servo.class, "PickupPlateServo");
+        CraneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
 
         //reverse wheels
         wheelRF.setDirection(DcMotor.Direction.REVERSE);
@@ -114,40 +104,23 @@ public class Main_Robot extends LinearOpMode {
         wheelRB.setPower(-joyX + joyY + joyR);
     }
 
+    private void Arm(){
+        //get the input
+        double inputLeftStick = gamepad2.left_stick_y;
+        double inputRightStick = gamepad2.right_stick_y;
 
+        double servoRotationSpeed = 0.004f;
 
-    //pickup block
-    private void PickupBlock(){
+        //get servo position
+        if(inputLeftStick > 0.1)
+            pickupBlockServoPosition += servoRotationSpeed;
+        else if(inputLeftStick < -0.1)
+            pickupBlockServoPosition -= servoRotationSpeed;
 
-        if(gamepad2.left_stick_y > 0.1){
-            //turn the servo down
-            pickupBlockRotation += pickupBlockRotationSpeed;
+        //set servo position
+        pickupBlockServo.setPosition(pickupBlockServoPosition);
 
-        }else if(gamepad2.left_stick_y < -0.1){
-            //turn the servo up
-            pickupBlockRotation -= pickupBlockRotationSpeed;
-
-        }
-
-        pickupBlockServo.setPosition(pickupBlockRotation);
+        //rotate the motor
+        CraneMotor.setPower(inputRightStick * 0.15);
     }
-
-
-
-    //pickup block
-    private void PickupPlate(){
-
-        if(gamepad2.right_stick_y > 0.1){
-            //turn the servo down
-            pickupPlateRotation += pickupPlateRotationSpeed;
-
-        }else if(gamepad2.right_stick_y < -0.1){
-            //turn the servo up
-            pickupPlateRotation -= pickupPlateRotationSpeed;
-
-        }
-
-        pickupPlateServo.setPosition(pickupPlateRotation);
-    }
-
 }

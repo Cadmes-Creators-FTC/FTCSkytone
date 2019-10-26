@@ -22,7 +22,6 @@ public class RobotAutonomous extends LinearOpMode {
     private Servo pickupBlockServo;
 
 
-
     @Override
     public void runOpMode() throws InterruptedException{
 
