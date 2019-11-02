@@ -22,7 +22,7 @@ public class Main_Robot extends LinearOpMode {
     //pickupblock
     private Servo pickupBlockServo;
     private double pickupBlockServoPosition;
-    private DcMotor CraneMotor;
+    private DcMotor craneMotor;
 
 
     @Override
@@ -61,19 +61,24 @@ public class Main_Robot extends LinearOpMode {
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
 
-        //set encoder mode
+        //set wheel encoder mode
         wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //pickup block
-        pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
-        CraneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
-
         //reverse wheels
         wheelRF.setDirection(DcMotor.Direction.REVERSE);
         wheelRB.setDirection(DcMotor.Direction.REVERSE);
+
+
+        //pickup block
+        pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
+        craneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
+
+        //set crane encoder
+        craneMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        craneMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
 
@@ -109,6 +114,9 @@ public class Main_Robot extends LinearOpMode {
         double inputLeftStick = gamepad2.left_stick_y;
         double inputRightStick = gamepad2.right_stick_y;
 
+
+
+        //servo
         double servoRotationSpeed = 0.004f;
 
         //get servo position
@@ -120,7 +128,26 @@ public class Main_Robot extends LinearOpMode {
         //set servo position
         pickupBlockServo.setPosition(pickupBlockServoPosition);
 
-        //rotate the motor
-        CraneMotor.setPower(inputRightStick * 0.15);
+
+
+        //crane
+        //create variables
+        int craneMotorTargetTicks;
+
+        //calculate crane target position
+        if(inputRightStick > 0.5)
+            craneMotorTargetTicks = craneMotor.getCurrentPosition() + 20;
+        else if(inputRightStick < -0.5)
+            craneMotorTargetTicks = craneMotor.getCurrentPosition() - 20;
+        else
+            craneMotorTargetTicks = craneMotor.getTargetPosition();
+
+        //if target position is in bounds
+        if(craneMotorTargetTicks > 0 && craneMotorTargetTicks < 10000){
+            //set target position
+            craneMotor.setTargetPosition(craneMotorTargetTicks);
+            //set power
+            craneMotor.setPower(0.1);
+        }
     }
 }

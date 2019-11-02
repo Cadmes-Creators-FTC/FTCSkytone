@@ -38,9 +38,7 @@ public class RobotAutonomous extends LinearOpMode {
         waitForStart();
 
         //autonomous sequence
-        DriveForwardDistance(1, 100);
-        DriveLeftDistance(-1, -300);
-        TurnLeftDistance(-1, -500);
+        DriveForwardDistance(1, 10000);
     }
 
 
