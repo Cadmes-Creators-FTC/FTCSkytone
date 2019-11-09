@@ -5,23 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "Main_Robot", group = "MainGroup")
 public class Main_Robot extends LinearOpMode {
 
     //drive
-    private double driveSpeed = 0.8;
+    private double driveSpeed = 0.2;
     private DcMotor wheelLF;
     private DcMotor wheelRF;
     private DcMotor wheelRB;
     private DcMotor wheelLB;
 
 
-
     //pickupblock
     private Servo pickupBlockServo;
-    private double pickupBlockServoPosition;
+    private double pickupBlockServoPos;
     private DcMotor craneMotor;
 
 
@@ -36,24 +36,19 @@ public class Main_Robot extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            //change speed
-            ChangeSpeed();
 
             //drive and turn
             DriveWithController();
 
             //Move the arm
             Arm();
-
-            //update telemetry
-            telemetry.update();
         }
 
     }
 
 
 
-    //maphardware
+    //map hardware
     private void MapHardware(){
         //drive
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
@@ -72,41 +67,49 @@ public class Main_Robot extends LinearOpMode {
         wheelRB.setDirection(DcMotor.Direction.REVERSE);
 
 
-        //pickup block
+        //arm
         pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
         craneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
 
         //set crane encoder
-        craneMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        craneMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        craneMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
-
-
-    private void ChangeSpeed(){
-
-        //change the drive speed
-        if(gamepad1.y){
-            driveSpeed = 0.3;
-        }else if (gamepad1.b){
-            driveSpeed = 0.5;
-        }else if (gamepad1.a){
-            driveSpeed = 0.7;
-        }else if (gamepad1.x){
-            driveSpeed = 0.9;
-        }
-    }
-
 
     private void DriveWithController(){
-        double joyX = gamepad1.left_stick_x * driveSpeed;
-        double joyY = gamepad1.left_stick_y * driveSpeed;
-        double joyR = gamepad1.right_stick_x * driveSpeed;
+        double joyX = gamepad1.left_stick_x;
+        double joyY = gamepad1.left_stick_y;
+        double joyR = gamepad1.right_stick_x;
 
-        wheelLF.setPower(-joyX + joyY - joyR);
-        wheelRF.setPower(joyX + joyY + joyR);
-        wheelLB.setPower(joyX + joyY - joyR);
-        wheelRB.setPower(-joyX + joyY + joyR);
+        double inputLF = 0;
+        double inputRF = 0;
+        double inputLB = 0;
+        double inputRB = 0;
+
+        inputLF -= joyX;
+        inputRF += joyX;
+        inputLB += joyX;
+        inputRB -= joyX;
+
+        inputLF += joyY;
+        inputRF += joyY;
+        inputLB += joyY;
+        inputRB += joyY;
+
+        inputLF -= joyR;
+        inputRF += joyR;
+        inputLB -= joyR;
+        inputRB += joyR;
+
+        telemetry.addData("LF", inputLF);
+        telemetry.addData("RF", inputRF);
+        telemetry.addData("RB", inputRB);
+        telemetry.addData("LB", inputLB);
+        telemetry.update();
+
+        wheelLF.setPower(inputLF);
+        wheelRF.setPower(inputRF);
+        wheelLB.setPower(inputLB);
+        wheelRB.setPower(inputRB);
     }
 
     private void Arm(){
@@ -115,39 +118,23 @@ public class Main_Robot extends LinearOpMode {
         double inputRightStick = gamepad2.right_stick_y;
 
 
-
         //servo
-        double servoRotationSpeed = 0.004f;
+        double servoRotationSpeed = 0.004;
 
         //get servo position
         if(inputLeftStick > 0.1)
-            pickupBlockServoPosition += servoRotationSpeed;
+            pickupBlockServoPos += servoRotationSpeed;
         else if(inputLeftStick < -0.1)
-            pickupBlockServoPosition -= servoRotationSpeed;
+            pickupBlockServoPos -= servoRotationSpeed;
 
         //set servo position
-        pickupBlockServo.setPosition(pickupBlockServoPosition);
+        pickupBlockServo.setPosition(pickupBlockServoPos);
 
 
 
         //crane
-        //create variables
-        int craneMotorTargetTicks;
+        double craneRotationSpeed = 0.1;
 
-        //calculate crane target position
-        if(inputRightStick > 0.5)
-            craneMotorTargetTicks = craneMotor.getCurrentPosition() + 20;
-        else if(inputRightStick < -0.5)
-            craneMotorTargetTicks = craneMotor.getCurrentPosition() - 20;
-        else
-            craneMotorTargetTicks = craneMotor.getTargetPosition();
-
-        //if target position is in bounds
-        if(craneMotorTargetTicks > 0 && craneMotorTargetTicks < 10000){
-            //set target position
-            craneMotor.setTargetPosition(craneMotorTargetTicks);
-            //set power
-            craneMotor.setPower(0.1);
-        }
+        craneMotor.setPower(inputRightStick * craneRotationSpeed);
     }
 }
