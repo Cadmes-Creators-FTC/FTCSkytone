@@ -39,12 +39,6 @@ public class RobotAutonomous extends LinearOpMode {
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
 
-        //set wheels to brake
-        wheelLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wheelRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wheelRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wheelLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         //reverse wheels
         wheelLF.setDirection(DcMotor.Direction.REVERSE);
         wheelLB.setDirection(DcMotor.Direction.REVERSE);

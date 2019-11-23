@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -60,23 +59,17 @@ public class Main_Robot extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //set wheels to brake
-        wheelLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wheelRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wheelRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wheelLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         //reverse wheels
         wheelRF.setDirection(DcMotor.Direction.REVERSE);
         wheelRB.setDirection(DcMotor.Direction.REVERSE);
 
 
         //arm
-        pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
-        craneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
+        //pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
+        //craneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
 
         //set crane encoder
-        craneMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //craneMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private void DriveWithController(){
@@ -104,11 +97,6 @@ public class Main_Robot extends LinearOpMode {
         inputLB -= joyR;
         inputRB += joyR;
 
-        inputLF *= 0.2;
-        inputRF *= 0.2;
-        inputLB *= 0.2;
-        inputRB *= 0.2;
-
         telemetry.addData("LF", inputLF);
         telemetry.addData("RF", inputRF);
         telemetry.addData("RB", inputRB);
@@ -122,6 +110,7 @@ public class Main_Robot extends LinearOpMode {
     }
 
     private void Arm(){
+        /*
         //get the input
         double inputLeftStick = gamepad2.left_stick_y;
         double inputRightStick = gamepad2.right_stick_y;
@@ -145,5 +134,6 @@ public class Main_Robot extends LinearOpMode {
         double craneRotationSpeed = 0.1;
 
         craneMotor.setPower(inputRightStick * craneRotationSpeed);
+        */
     }
 }
