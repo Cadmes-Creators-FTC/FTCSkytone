@@ -5,13 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "Main_Robot", group = "MainGroup")
 public class Main_Robot extends LinearOpMode {
 
     //drive
+    private DcMotor.ZeroPowerBehavior brake = DcMotor.ZeroPowerBehavior.BRAKE;
     private double driveSpeed = 0.2;
     private DcMotor wheelLF;
     private DcMotor wheelRF;
@@ -23,7 +23,6 @@ public class Main_Robot extends LinearOpMode {
     private Servo pickupBlockServo;
     private double pickupBlockServoPos;
     private DcMotor craneMotor;
-
 
     @Override
     public void runOpMode (){
@@ -62,6 +61,12 @@ public class Main_Robot extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //set wheels to brake
+        wheelLF.setZeroPowerBehavior(brake);
+        wheelRF.setZeroPowerBehavior(brake);
+        wheelRB.setZeroPowerBehavior(brake);
+        wheelLB.setZeroPowerBehavior(brake);
+
         //reverse wheels
         wheelRF.setDirection(DcMotor.Direction.REVERSE);
         wheelRB.setDirection(DcMotor.Direction.REVERSE);
@@ -99,6 +104,11 @@ public class Main_Robot extends LinearOpMode {
         inputRF += joyR;
         inputLB -= joyR;
         inputRB += joyR;
+
+        inputLF *= driveSpeed;
+        inputRF *= driveSpeed;
+        inputLB *= driveSpeed;
+        inputRB *= driveSpeed;
 
         telemetry.addData("LF", inputLF);
         telemetry.addData("RF", inputRF);
