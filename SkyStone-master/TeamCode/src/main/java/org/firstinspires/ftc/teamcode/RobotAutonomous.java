@@ -21,6 +21,18 @@ public class RobotAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
+        MapHardware();
+
+        //wait for pressing play
+        waitForStart();
+
+        //if on start autonomous
+        if(opModeIsActive())
+            AutonomousSequence();
+    }
+
+    //map hardware
+    private void MapHardware(){
         //map wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -36,21 +48,19 @@ public class RobotAutonomous extends LinearOpMode {
         //reverse wheels
         wheelLF.setDirection(DcMotor.Direction.REVERSE);
         wheelLB.setDirection(DcMotor.Direction.REVERSE);
-
-        //wait for pressing play
-        waitForStart();
-
-        //if on start autonomous
-        if(opModeIsActive())
-            AutonomousSequence();
     }
 
+
+
+    //autonomous sequence
     private void AutonomousSequence(){
         //autonomous sequence
         DriveForwardTime(1, 300);
         DriveBackwardTime(1, 2000);
         StopDriving();
     }
+
+
 
     //driving methods
 
