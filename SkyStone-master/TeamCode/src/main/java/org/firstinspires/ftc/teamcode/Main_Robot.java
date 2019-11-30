@@ -3,10 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 
-@SuppressWarnings("unused")
+
 @TeleOp(name = "Main_Robot", group = "MainGroup")
 public class Main_Robot extends LinearOpMode {
 
@@ -15,12 +14,6 @@ public class Main_Robot extends LinearOpMode {
     private DcMotor wheelRF;
     private DcMotor wheelRB;
     private DcMotor wheelLB;
-
-
-    //pickup block
-    private Servo pickupBlockServo;
-    private double pickupBlockServoPos;
-    private DcMotor craneMotor;
 
     @Override
     public void runOpMode (){
@@ -36,9 +29,6 @@ public class Main_Robot extends LinearOpMode {
 
             //drive and turn
             DriveWithController();
-
-            //Move the arm
-            Arm();
         }
 
     }
@@ -62,14 +52,6 @@ public class Main_Robot extends LinearOpMode {
         //reverse wheels
         wheelRF.setDirection(DcMotor.Direction.REVERSE);
         wheelRB.setDirection(DcMotor.Direction.REVERSE);
-
-
-        //arm
-        //pickupBlockServo = hardwareMap.get(Servo.class, "PickupBlockServo");
-        //craneMotor = hardwareMap.get(DcMotor.class, "PickupCrane");
-
-        //set crane encoder
-        //craneMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private void DriveWithController(){
@@ -107,33 +89,5 @@ public class Main_Robot extends LinearOpMode {
         wheelRF.setPower(inputRF);
         wheelLB.setPower(inputLB);
         wheelRB.setPower(inputRB);
-    }
-
-    private void Arm(){
-        /*
-        //get the input
-        double inputLeftStick = gamepad2.left_stick_y;
-        double inputRightStick = gamepad2.right_stick_y;
-
-
-        //servo
-        double servoRotationSpeed = 0.004;
-
-        //get servo position
-        if(inputLeftStick > 0.1)
-            pickupBlockServoPos += servoRotationSpeed;
-        else if(inputLeftStick < -0.1)
-            pickupBlockServoPos -= servoRotationSpeed;
-
-        //set servo position
-        pickupBlockServo.setPosition(pickupBlockServoPos);
-
-
-
-        //crane
-        double craneRotationSpeed = 0.1;
-
-        craneMotor.setPower(inputRightStick * craneRotationSpeed);
-        */
     }
 }
