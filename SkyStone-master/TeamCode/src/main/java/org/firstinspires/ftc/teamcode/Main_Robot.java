@@ -24,6 +24,9 @@ public class Main_Robot extends LinearOpMode {
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
 
+    //capstone
+    private Servo dropCapStoneServo;
+
     @Override
     public void runOpMode (){
 
@@ -44,6 +47,12 @@ public class Main_Robot extends LinearOpMode {
 
             //move build plate
             MoveBuildPlate();
+
+            //drop capstone
+            CapStoneDrop();
+
+            //update telemetry
+            telemetry.update();
         }
 
     }
@@ -78,14 +87,17 @@ public class Main_Robot extends LinearOpMode {
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
+        dropCapStoneServo = hardwareMap.get(Servo.class, "DropCapStoneServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
+        dropCapStoneServo.scaleRange(.2, .7);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
+        dropCapStoneServo.setPosition(1);
     }
 
 
@@ -119,7 +131,6 @@ public class Main_Robot extends LinearOpMode {
         telemetry.addData("RF", inputRF);
         telemetry.addData("RB", inputRB);
         telemetry.addData("LB", inputLB);
-        telemetry.update();
 
         wheelLF.setPower(inputLF);
         wheelRF.setPower(inputRF);
@@ -142,12 +153,20 @@ public class Main_Robot extends LinearOpMode {
 
     //move build plate servos
     private void MoveBuildPlate(){
-        if(gamepad2.left_trigger > .1){
+        if(gamepad2.right_trigger > .1){
             buildPlateServoLeft.setPosition(1);
             buildPlateServoRight.setPosition(0);
-        }else if (gamepad2.right_trigger > .1){
+        }else if (gamepad2.left_trigger > .1){
             buildPlateServoLeft.setPosition(0);
             buildPlateServoRight.setPosition(1);
+        }
+    }
+
+    private void CapStoneDrop(){
+        if(gamepad2.b){
+            dropCapStoneServo.setPosition(1);
+        }else if (gamepad2.a){
+            dropCapStoneServo.setPosition(0);
         }
     }
 }
