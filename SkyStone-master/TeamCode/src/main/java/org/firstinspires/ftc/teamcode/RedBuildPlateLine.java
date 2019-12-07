@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @SuppressWarnings({"RedundantThrows", "SameParameterValue", "unused"})
-@Autonomous (name="BlueBuildPlateLine", group="MainGroup")
-public class BlueBuildPlateLine extends LinearOpMode {
+@Autonomous (name="RedBuildPlateLine", group="MainGroup")
+public class RedBuildPlateLine extends LinearOpMode {
 
     //variables
 
@@ -86,13 +86,13 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveLeft(1, CMToTicks(40));
+        DriveRight(1, CMToTicks(40));
         DriveForward(1, CMToTicks(160));
         MoveBuildPlate(true);
         DriveBackward(1, CMToTicks(170));
-        TurnLeft(1, CMToTicks(50));
+        TurnRight(1, CMToTicks(50));
         MoveBuildPlate(false);
-        DriveRight(1, CMToTicks(240));
+        DriveLeft(1, CMToTicks(240));
         DriveBackward(1, CMToTicks(50));
     }
 
