@@ -86,14 +86,13 @@ public class RobotAutonomous extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        //autonomous sequence
 
     }
 
 
 
     //Drive Forward with distance
-    private void DriveForward(double power, int distance){
+    private void DriveForward(int distance){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -120,10 +119,10 @@ public class RobotAutonomous extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLF.setPower(1);
+            wheelRF.setPower(1);
+            wheelRB.setPower(1);
+            wheelLB.setPower(1);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -145,7 +144,7 @@ public class RobotAutonomous extends LinearOpMode {
         wheelLB.setPower(0);
     }
     //Drive Backward with distance
-    private void DriveBackward(double power, int distance){
+    private void DriveBackward(int distance){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -172,10 +171,10 @@ public class RobotAutonomous extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLF.setPower(1);
+            wheelRF.setPower(1);
+            wheelRB.setPower(1);
+            wheelLB.setPower(1);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -198,7 +197,7 @@ public class RobotAutonomous extends LinearOpMode {
     }
 
     //Drive Left with distance
-    private void DriveLeft(double power, int distance){
+    private void DriveLeft(int distance){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -225,10 +224,10 @@ public class RobotAutonomous extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLF.setPower(1);
+            wheelRF.setPower(1);
+            wheelRB.setPower(1);
+            wheelLB.setPower(1);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -250,7 +249,7 @@ public class RobotAutonomous extends LinearOpMode {
         wheelLB.setPower(0);
     }
     //Drive Right with distance
-    private void DriveRight(double power, int distance){
+    private void DriveRight(int distance){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -277,10 +276,10 @@ public class RobotAutonomous extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLF.setPower(1);
+            wheelRF.setPower(1);
+            wheelRB.setPower(1);
+            wheelLB.setPower(1);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -303,7 +302,7 @@ public class RobotAutonomous extends LinearOpMode {
     }
 
     //Turn Left with distance
-    private void TurnLeft(double power, int distance){
+    private void TurnLeft(int distance){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -330,10 +329,10 @@ public class RobotAutonomous extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLF.setPower(1);
+            wheelRF.setPower(1);
+            wheelRB.setPower(1);
+            wheelLB.setPower(1);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -355,7 +354,7 @@ public class RobotAutonomous extends LinearOpMode {
         wheelLB.setPower(0);
     }
     //Turn Right with distance
-    private void TurnRight(double power, int distance){
+    private void TurnRight(int distance){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -382,10 +381,10 @@ public class RobotAutonomous extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLF.setPower(1);
+            wheelRF.setPower(1);
+            wheelRB.setPower(1);
+            wheelLB.setPower(1);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());

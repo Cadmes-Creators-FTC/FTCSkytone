@@ -127,11 +127,6 @@ public class Main_Robot extends LinearOpMode {
         inputLB -= joyR;
         inputRB += joyR;
 
-        telemetry.addData("LF", inputLF);
-        telemetry.addData("RF", inputRF);
-        telemetry.addData("RB", inputRB);
-        telemetry.addData("LB", inputLB);
-
         wheelLF.setPower(inputLF);
         wheelRF.setPower(inputRF);
         wheelLB.setPower(inputLB);
