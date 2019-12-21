@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -68,10 +69,10 @@ public class Main_Robot extends LinearOpMode {
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
 
         //set drive wheels encoders modes
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //reverse drive wheels
         wheelRF.setDirection(DcMotor.Direction.REVERSE);
@@ -127,10 +128,10 @@ public class Main_Robot extends LinearOpMode {
         inputLB -= joyR;
         inputRB += joyR;
 
-        wheelLF.setPower(inputLF);
-        wheelRF.setPower(inputRF);
-        wheelLB.setPower(inputLB);
-        wheelRB.setPower(inputRB);
+        wheelLF.setPower(inputLF * inputLF * inputLF);
+        wheelRF.setPower(inputRF * inputRF * inputRF);
+        wheelLB.setPower(inputLB * inputLB * inputLB);
+        wheelRB.setPower(inputRB * inputRB * inputRB);
     }
 
     private void IntakeWheels(){
