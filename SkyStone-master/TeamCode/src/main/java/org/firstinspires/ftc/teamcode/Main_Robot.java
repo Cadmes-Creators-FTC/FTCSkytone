@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -15,6 +15,9 @@ public class Main_Robot extends LinearOpMode {
     private DcMotor wheelRF;
     private DcMotor wheelRB;
     private DcMotor wheelLB;
+
+    //IMU
+    private BNO055IMU IMU;
 
     //intake
     private DcMotor intakeWheelLeft;
@@ -51,6 +54,13 @@ public class Main_Robot extends LinearOpMode {
 
             //drop capstone
             CapStoneDrop();
+
+            telemetry.addData("linearAcceleration", IMU.getLinearAcceleration());
+            telemetry.addData("angularOrientation", IMU.getAngularOrientation());
+            telemetry.addData("velocity", IMU.getVelocity());
+            telemetry.addData("position", IMU.getPosition());
+            telemetry.addData("gravity", IMU.getGravity());
+            telemetry.addData("temperature", IMU.getTemperature());
 
             //update telemetry
             telemetry.update();
@@ -99,6 +109,9 @@ public class Main_Robot extends LinearOpMode {
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
         dropCapStoneServo.setPosition(1);
+
+        //imu
+        IMU = hardwareMap.get(BNO055IMU.class, "imu");
     }
 
 

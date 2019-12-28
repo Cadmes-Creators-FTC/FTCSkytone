@@ -86,20 +86,21 @@ public class RedBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveRight(CMToTicks(40));
-        DriveForward(CMToTicks(160));
+        DriveForward(CMToTicks(10), 0.7);
+        DriveRight(CMToTicks(40), 0.7);
+        DriveForward(CMToTicks(160), 0.2);
         MoveBuildPlate(true);
-        DriveBackward(CMToTicks(170));
-        TurnRight(CMToTicks(50));
+        DriveBackward(CMToTicks(180), 0.7);
+        TurnRight(CMToTicks(50), 0.7);
         MoveBuildPlate(false);
-        DriveLeft(CMToTicks(240));
-        DriveBackward(CMToTicks(50));
+        DriveLeft(CMToTicks(240), 0.7);
+        DriveBackward(CMToTicks(50), 0.2);
     }
 
 
 
     //Drive Forward with distance
-    private void DriveForward(int distance){
+    private void DriveForward(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -119,17 +120,17 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
         //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(1);
-            wheelRF.setPower(1);
-            wheelRB.setPower(1);
-            wheelLB.setPower(1);
+            wheelLF.setPower(power);
+            wheelRF.setPower(power);
+            wheelRB.setPower(power);
+            wheelLB.setPower(power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -138,12 +139,6 @@ public class RedBuildPlateLine extends LinearOpMode {
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
 
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         //set power to 0
         wheelLF.setPower(0);
         wheelRF.setPower(0);
@@ -151,7 +146,7 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLB.setPower(0);
     }
     //Drive Backward with distance
-    private void DriveBackward(int distance){
+    private void DriveBackward(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -171,17 +166,17 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
         //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(1);
-            wheelRF.setPower(1);
-            wheelRB.setPower(1);
-            wheelLB.setPower(1);
+            wheelLF.setPower(-power);
+            wheelRF.setPower(-power);
+            wheelRB.setPower(-power);
+            wheelLB.setPower(-power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -189,12 +184,6 @@ public class RedBuildPlateLine extends LinearOpMode {
             wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
-
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set power to 0
         wheelLF.setPower(0);
@@ -204,7 +193,7 @@ public class RedBuildPlateLine extends LinearOpMode {
     }
 
     //Drive Left with distance
-    private void DriveLeft(int distance){
+    private void DriveLeft(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -224,17 +213,17 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
         //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(1);
-            wheelRF.setPower(1);
-            wheelRB.setPower(1);
-            wheelLB.setPower(1);
+            wheelLF.setPower(-power);
+            wheelRF.setPower(power);
+            wheelRB.setPower(-power);
+            wheelLB.setPower(power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -243,12 +232,6 @@ public class RedBuildPlateLine extends LinearOpMode {
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
 
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         //set power to 0
         wheelLF.setPower(0);
         wheelRF.setPower(0);
@@ -256,7 +239,7 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLB.setPower(0);
     }
     //Drive Right with distance
-    private void DriveRight(int distance){
+    private void DriveRight(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -276,17 +259,17 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
         //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
+        while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
             //set wheel powers
-            wheelLF.setPower(1);
-            wheelRF.setPower(1);
-            wheelRB.setPower(1);
-            wheelLB.setPower(1);
+            wheelLF.setPower(power);
+            wheelRF.setPower(-power);
+            wheelRB.setPower(power);
+            wheelLB.setPower(-power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -294,12 +277,6 @@ public class RedBuildPlateLine extends LinearOpMode {
             wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
-
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set power to 0
         wheelLF.setPower(0);
@@ -309,7 +286,7 @@ public class RedBuildPlateLine extends LinearOpMode {
     }
 
     //Turn Left with distance
-    private void TurnLeft(int distance){
+    private void TurnLeft(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -329,17 +306,17 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
         //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(1);
-            wheelRF.setPower(1);
-            wheelRB.setPower(1);
-            wheelLB.setPower(1);
+            wheelLF.setPower(-power);
+            wheelRF.setPower(power);
+            wheelRB.setPower(power);
+            wheelLB.setPower(-power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -348,12 +325,6 @@ public class RedBuildPlateLine extends LinearOpMode {
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
 
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         //set power to 0
         wheelLF.setPower(0);
         wheelRF.setPower(0);
@@ -361,7 +332,7 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLB.setPower(0);
     }
     //Turn Right with distance
-    private void TurnRight(int distance){
+    private void TurnRight(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -381,17 +352,17 @@ public class RedBuildPlateLine extends LinearOpMode {
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
         //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wheelLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(1);
-            wheelRF.setPower(1);
-            wheelRB.setPower(1);
-            wheelLB.setPower(1);
+            wheelLF.setPower(power);
+            wheelRF.setPower(-power);
+            wheelRB.setPower(-power);
+            wheelLB.setPower(power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -399,12 +370,6 @@ public class RedBuildPlateLine extends LinearOpMode {
             wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
-
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set power to 0
         wheelLF.setPower(0);
@@ -414,8 +379,11 @@ public class RedBuildPlateLine extends LinearOpMode {
     }
 
     //convert cm to encoder ticks
-    private int CMToTicks(int CM){
-        return CM * 17;
+    private int CMToTicks(double CM){
+        double tickCM = 1120 / 26.928;
+        tickCM *= (100f/141f);
+        long ticks = Math.round(tickCM * CM);
+        return (int) ticks;
     }
 
 
