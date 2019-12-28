@@ -84,7 +84,7 @@ public class RobotAutonomous extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(100), 0.2);
+
     }
 
 

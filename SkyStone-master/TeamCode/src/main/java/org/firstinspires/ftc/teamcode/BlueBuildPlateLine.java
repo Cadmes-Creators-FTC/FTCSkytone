@@ -84,16 +84,16 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10), 0.7);
-        DriveLeft(CMToTicks(60), 0.7);
-        DriveForward(CMToTicks(90), 0.7);
+        DriveForward(CMToTicks(10), 0.4);
+        DriveLeft(CMToTicks(60), 0.4);
+        DriveForward(CMToTicks(90), 0.4);
         DriveForward(CMToTicks(40), 0.2);
         MoveBuildPlate(true);
         DriveBackward(CMToTicks(150), 0.4);
         TurnLeft(CMToTicks(50), 0.4);
         MoveBuildPlate(false);
-        DriveRight(CMToTicks(100), 0.4);
-        TurnRight(CMToTicks(50), 0.7);
+        DriveRight(CMToTicks(170), 0.4);
+        TurnRight(CMToTicks(20), 0.4);
         DriveBackward(CMToTicks(50), 0.2);
     }
 

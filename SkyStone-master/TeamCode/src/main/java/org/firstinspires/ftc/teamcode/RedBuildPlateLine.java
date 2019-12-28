@@ -86,14 +86,16 @@ public class RedBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10), 0.7);
-        DriveRight(CMToTicks(40), 0.7);
-        DriveForward(CMToTicks(160), 0.2);
+        DriveForward(CMToTicks(10), 0.4);
+        DriveRight(CMToTicks(60), 0.4);
+        DriveForward(CMToTicks(90), 0.4);
+        DriveForward(CMToTicks(40), 0.2);
         MoveBuildPlate(true);
-        DriveBackward(CMToTicks(180), 0.7);
-        TurnRight(CMToTicks(50), 0.7);
+        DriveBackward(CMToTicks(150), 0.4);
+        TurnRight(CMToTicks(50), 0.4);
         MoveBuildPlate(false);
-        DriveLeft(CMToTicks(240), 0.7);
+        DriveLeft(CMToTicks(170), 0.4);
+        TurnLeft(CMToTicks(20), 0.4);
         DriveBackward(CMToTicks(50), 0.2);
     }
 

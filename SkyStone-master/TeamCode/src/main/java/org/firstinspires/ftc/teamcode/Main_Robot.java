@@ -16,9 +16,6 @@ public class Main_Robot extends LinearOpMode {
     private DcMotor wheelRB;
     private DcMotor wheelLB;
 
-    //IMU
-    private BNO055IMU IMU;
-
     //intake
     private DcMotor intakeWheelLeft;
     private DcMotor intakeWheelRight;
@@ -54,13 +51,6 @@ public class Main_Robot extends LinearOpMode {
 
             //drop capstone
             CapStoneDrop();
-
-            telemetry.addData("linearAcceleration", IMU.getLinearAcceleration());
-            telemetry.addData("angularOrientation", IMU.getAngularOrientation());
-            telemetry.addData("velocity", IMU.getVelocity());
-            telemetry.addData("position", IMU.getPosition());
-            telemetry.addData("gravity", IMU.getGravity());
-            telemetry.addData("temperature", IMU.getTemperature());
 
             //update telemetry
             telemetry.update();
@@ -109,9 +99,6 @@ public class Main_Robot extends LinearOpMode {
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
         dropCapStoneServo.setPosition(1);
-
-        //imu
-        IMU = hardwareMap.get(BNO055IMU.class, "imu");
     }
 
 
