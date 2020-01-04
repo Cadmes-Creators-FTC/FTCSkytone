@@ -122,8 +122,10 @@ public class BlueLine extends LinearOpMode {
     //autonomous sequence
     private void AutonomousSequence(){
         DriveForward(CMToTicks(10), 0.7);
-        DriveRight(CMToTicks(50), 0.7);
-        DriveForward(CMToTicks(15), 0.7);
+        DriveRight(CMToTicks(65), 0.7);
+        DriveBackward(CMToTicks(15), 0.4);
+
+
     }
 
 
