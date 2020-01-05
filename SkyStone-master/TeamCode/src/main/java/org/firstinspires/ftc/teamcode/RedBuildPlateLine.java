@@ -382,10 +382,10 @@ public class RedBuildPlateLine extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
+            wheelLF.setPower(-power);
             wheelRF.setPower(power);
             wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLB.setPower(-power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -429,8 +429,8 @@ public class RedBuildPlateLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
             wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
+            wheelRF.setPower(-power);
+            wheelRB.setPower(-power);
             wheelLB.setPower(power);
 
             //set wheelPositions

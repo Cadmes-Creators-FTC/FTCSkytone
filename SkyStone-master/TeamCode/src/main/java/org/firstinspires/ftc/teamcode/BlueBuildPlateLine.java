@@ -121,14 +121,14 @@ public class BlueBuildPlateLine extends LinearOpMode {
     private void AutonomousSequence(){
         DriveForward(CMToTicks(10), 0.4);
         DriveLeft(CMToTicks(60), 0.4);
-        DriveForward(CMToTicks(90), 0.4);
+        DriveForward(CMToTicks(50), 0.4);
         DriveForward(CMToTicks(40), 0.2);
         MoveBuildPlate(true);
-        DriveBackward(CMToTicks(150), 0.4);
+        DriveBackward(CMToTicks(100), 0.4);
         TurnLeft(CMToTicks(50), 0.4);
         MoveBuildPlate(false);
         DriveRight(CMToTicks(170), 0.4);
-        TurnRight(CMToTicks(20), 0.4);
+        TurnRight(CMToTicks(50), 0.4);
         DriveBackward(CMToTicks(50), 0.2);
     }
 
@@ -380,10 +380,10 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
-            wheelLF.setPower(power);
+            wheelLF.setPower(-power);
             wheelRF.setPower(power);
             wheelRB.setPower(power);
-            wheelLB.setPower(power);
+            wheelLB.setPower(-power);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -391,6 +391,9 @@ public class BlueBuildPlateLine extends LinearOpMode {
             wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
+
+        globalAngle = 0;
+        lastAngles = new Orientation();
 
         //set power to 0
         wheelLF.setPower(0);
@@ -427,8 +430,8 @@ public class BlueBuildPlateLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
             //set wheel powers
             wheelLF.setPower(power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
+            wheelRF.setPower(-power);
+            wheelRB.setPower(-power);
             wheelLB.setPower(power);
 
             //set wheelPositions
@@ -437,6 +440,9 @@ public class BlueBuildPlateLine extends LinearOpMode {
             wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
+
+        globalAngle = 0;
+        lastAngles = new Orientation();
 
         //set power to 0
         wheelLF.setPower(0);
