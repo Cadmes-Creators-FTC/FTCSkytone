@@ -124,7 +124,7 @@ public class RedLine extends LinearOpMode {
         DriveForward(CMToTicks(10), 0.7);
         DriveLeft(CMToTicks(65), 0.7);
         DriveBackward(CMToTicks(10), 0.4);
-       
+
     }
 
 
