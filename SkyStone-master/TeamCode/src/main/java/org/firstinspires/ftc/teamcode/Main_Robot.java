@@ -1,15 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "Main_Robot", group = "MainGroup")
+@TeleOp(name = "Main_Robot", group = "TeleOp")
 public class Main_Robot extends LinearOpMode {
 
-    //drive
+    //wheels
     private DcMotor wheelLF;
     private DcMotor wheelRF;
     private DcMotor wheelRB;
@@ -20,7 +21,6 @@ public class Main_Robot extends LinearOpMode {
     private DcMotor intakeWheelRight;
 
     //build plate
-    //move build plate
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
 
@@ -56,7 +56,6 @@ public class Main_Robot extends LinearOpMode {
         }
 
     }
-
 
 
     //map hardware
@@ -101,7 +100,7 @@ public class Main_Robot extends LinearOpMode {
     }
 
 
-
+    //drive
     private void DriveWithController(){
         double joyX = gamepad1.left_stick_x;
         double joyY = gamepad1.left_stick_y;
@@ -133,6 +132,8 @@ public class Main_Robot extends LinearOpMode {
         wheelRB.setPower(inputRB * inputRB * inputRB);
     }
 
+
+    //intake
     private void IntakeWheels(){
         if(gamepad2.dpad_up){
             intakeWheelLeft.setPower(1);
@@ -146,7 +147,8 @@ public class Main_Robot extends LinearOpMode {
         }
     }
 
-    //move build plate servos
+
+    //move build plate
     private void MoveBuildPlate(){
         if(gamepad2.right_trigger > .1){
             buildPlateServoLeft.setPosition(1);
@@ -157,6 +159,8 @@ public class Main_Robot extends LinearOpMode {
         }
     }
 
+
+    //drop capstone
     private void CapStoneDrop(){
         if(gamepad2.b){
             dropCapStoneServo.setPosition(1);

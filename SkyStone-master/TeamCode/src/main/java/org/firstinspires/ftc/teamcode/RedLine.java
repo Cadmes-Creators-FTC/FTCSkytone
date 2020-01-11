@@ -12,18 +12,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+
 @SuppressWarnings({"RedundantThrows", "SameParameterValue", "unused"})
-@Autonomous (name="RedLine", group="MainGroup")
+@Autonomous (name="RedLine", group="Autonomous")
 public class RedLine extends LinearOpMode {
 
-    //variables
-
-    //drive
+    //wheels
     //motors
     private DcMotor wheelLF;
     private DcMotor wheelRF;
     private DcMotor wheelRB;
     private DcMotor wheelLB;
+
     //positions
     private int wheelLFPos = 0;
     private int wheelRFPos = 0;
@@ -35,6 +35,7 @@ public class RedLine extends LinearOpMode {
     //move build plate
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
+
 
     //IMU
     private BNO055IMU imu;
@@ -63,17 +64,14 @@ public class RedLine extends LinearOpMode {
         //wait for pressing play
         waitForStart();
 
+        telemetry.addData("autonomous status", "running");
+
         //if on start autonomous
         AutonomousSequence();
 
-        while (opModeIsActive()){
-            telemetry.addData("LF", wheelLF.getCurrentPosition());
-            telemetry.addData("RF", wheelRF.getCurrentPosition());
-            telemetry.addData("RB", wheelRB.getCurrentPosition());
-            telemetry.addData("LB", wheelLB.getCurrentPosition());
-            telemetry.update();
-        }
+        telemetry.addData("autonomous status", "done");
     }
+
 
     //map hardware
     private void MapHardware(){
@@ -119,14 +117,12 @@ public class RedLine extends LinearOpMode {
     }
 
 
-
     //autonomous sequence
     private void AutonomousSequence(){
         DriveForward(CMToTicks(10, false), 0.7);
         DriveLeft(CMToTicks(65, true), 0.7);
         DriveBackward(CMToTicks(10, false), 0.4);
     }
-
 
 
     //Drive Forward with distance
@@ -158,17 +154,17 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = checkDirection();
+            correction = GetCorrection();
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 global heading", globalAngle);
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power - correction);
-            wheelRF.setPower(power + correction);
-            wheelRB.setPower(power + correction);
-            wheelLB.setPower(power - correction);
+            wheelLF.setPower(power + correction);
+            wheelRF.setPower(power - correction);
+            wheelRB.setPower(power - correction);
+            wheelLB.setPower(power + correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -212,17 +208,17 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = checkDirection();
+            correction = GetCorrection();
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 global heading", globalAngle);
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power - correction);
-            wheelRF.setPower(-power + correction);
-            wheelRB.setPower(-power + correction);
-            wheelLB.setPower(-power - correction);
+            wheelLF.setPower(-power + correction);
+            wheelRF.setPower(-power - correction);
+            wheelRB.setPower(-power - correction);
+            wheelLB.setPower(-power + correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -267,17 +263,17 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = checkDirection();
+            correction = GetCorrection();
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 global heading", globalAngle);
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power - correction);
-            wheelRF.setPower(power + correction);
-            wheelLB.setPower(power - correction);
-            wheelRB.setPower(-power + correction);
+            wheelLF.setPower(-power + correction);
+            wheelRF.setPower(power - correction);
+            wheelRB.setPower(-power - correction);
+            wheelLB.setPower(power + correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -321,17 +317,17 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
             // Use gyro to drive in a straight line.
-            correction = checkDirection();
+            correction = GetCorrection();
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 global heading", globalAngle);
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power - correction);
-            wheelRF.setPower(-power + correction);
-            wheelRB.setPower(power + correction);
-            wheelLB.setPower(-power - correction);
+            wheelLF.setPower(power + correction);
+            wheelRF.setPower(-power - correction);
+            wheelRB.setPower(power - correction);
+            wheelLB.setPower(-power + correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -347,48 +343,41 @@ public class RedLine extends LinearOpMode {
         wheelLB.setPower(0);
     }
 
-    //verander naar targetdistance en dan wachten tot behaald
-    //Turn Left with distance
-    private void TurnLeft(int distance, double power){
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    //turning
+    private void Turn(int turnAmount, double power){
+        double flexibility = 5;
 
-        //set target position
-        wheelLF.setTargetPosition(-distance);
-        wheelRF.setTargetPosition(distance);
-        wheelRB.setTargetPosition(distance);
-        wheelLB.setTargetPosition(-distance);
+        //set targetAngle
+        targetAngle += turnAmount;
 
-        //initialize wheel positions
-        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while (globalAngle < targetAngle - flexibility){
 
-        while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
-            //set wheel powers
-            wheelLF.setPower(-power);
-            wheelRF.setPower(power);
-            wheelRB.setPower(power);
-            wheelLB.setPower(-power);
+            //set power
+            wheelLF.setPower(power * 1);
+            wheelRF.setPower(power * -1);
+            wheelRB.setPower(power * -1);
+            wheelLB.setPower(power * 1);
 
-            //set wheelPositions
-            wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-            wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-            wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-            wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+            //update globalAngle
+            getAngle();
+
+            idle();
         }
 
-        targetAngle = getAngle();
+        while (globalAngle > targetAngle + flexibility){
+
+            //set power
+            wheelLF.setPower(power * -1);
+            wheelRF.setPower(power * 1);
+            wheelRB.setPower(power * 1);
+            wheelLB.setPower(power * -1);
+
+            //update globalAngle
+            getAngle();
+
+            idle();
+        }
 
         //set power to 0
         wheelLF.setPower(0);
@@ -396,54 +385,35 @@ public class RedLine extends LinearOpMode {
         wheelRB.setPower(0);
         wheelLB.setPower(0);
     }
-    //Turn Right with distance
-    private void TurnRight(int distance, double power){
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //set target position
-        wheelLF.setTargetPosition(distance);
-        wheelRF.setTargetPosition(-distance);
-        wheelRB.setTargetPosition(-distance);
-        wheelLB.setTargetPosition(distance);
 
-        //initialize wheel positions
-        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+    //imu gyro sensor
+    private double GetCorrection(){
+        double angle = getAngle();
+        double gain = .05;
 
-        //set to run to position
-        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if (angle == targetAngle)
+            correction = 0;
+        else
+            correction = targetAngle - angle;
 
-        while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
-            //set wheel powers
-            wheelLF.setPower(power);
-            wheelRF.setPower(-power);
-            wheelRB.setPower(-power);
-            wheelLB.setPower(power);
+        correction = correction * gain;
 
-            //set wheelPositions
-            wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-            wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-            wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-            wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
-        }
-
-        targetAngle = getAngle();
-
-        //set power to 0
-        wheelLF.setPower(0);
-        wheelRF.setPower(0);
-        wheelRB.setPower(0);
-        wheelLB.setPower(0);
+        return correction;
     }
+
+    private double getAngle(){
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
 
     //convert cm to encoder ticks
     private int CMToTicks(double CM, boolean side){
@@ -468,38 +438,5 @@ public class RedLine extends LinearOpMode {
             buildPlateServoRight.setPosition(1);
         }
         sleep(500);
-    }
-
-
-
-    private double checkDirection(){
-        double angle = getAngle();
-        double gain = .05;
-
-        if (angle == targetAngle)
-            correction = 0;
-        else
-            correction = targetAngle - angle;
-
-        correction = correction * gain;
-
-        return correction;
-    }
-
-    private double getAngle(){
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
     }
 }
