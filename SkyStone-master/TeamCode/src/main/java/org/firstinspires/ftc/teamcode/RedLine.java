@@ -25,10 +25,10 @@ public class RedLine extends LinearOpMode {
     private DcMotor wheelRB;
     private DcMotor wheelLB;
     //positions
-    int wheelLFPos = 0;
-    int wheelRFPos = 0;
-    int wheelRBPos = 0;
-    int wheelLBPos = 0;
+    private int wheelLFPos = 0;
+    private int wheelRFPos = 0;
+    private int wheelRBPos = 0;
+    private int wheelLBPos = 0;
 
 
     //build plate
@@ -38,10 +38,11 @@ public class RedLine extends LinearOpMode {
 
     //IMU
     private BNO055IMU imu;
-    Orientation lastAngles = new Orientation();
+    private Orientation lastAngles = new Orientation();
 
-    double correction;
-    double globalAngle;
+    private double correction;
+    private double globalAngle;
+    private double targetAngle;
 
 
     @Override
@@ -121,10 +122,9 @@ public class RedLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10), 0.7);
-        DriveLeft(CMToTicks(65), 0.7);
-        DriveBackward(CMToTicks(10), 0.4);
-
+        DriveForward(CMToTicks(10, false), 0.7);
+        DriveLeft(CMToTicks(65, true), 0.7);
+        DriveBackward(CMToTicks(10, false), 0.4);
     }
 
 
@@ -166,9 +166,9 @@ public class RedLine extends LinearOpMode {
             telemetry.update();
 
             wheelLF.setPower(power - correction);
-            wheelLB.setPower(power - correction);
             wheelRF.setPower(power + correction);
             wheelRB.setPower(power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -220,9 +220,9 @@ public class RedLine extends LinearOpMode {
             telemetry.update();
 
             wheelLF.setPower(-power - correction);
-            wheelLB.setPower(-power - correction);
             wheelRF.setPower(-power + correction);
             wheelRB.setPower(-power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -275,8 +275,8 @@ public class RedLine extends LinearOpMode {
             telemetry.update();
 
             wheelLF.setPower(-power - correction);
-            wheelLB.setPower(power - correction);
             wheelRF.setPower(power + correction);
+            wheelLB.setPower(power - correction);
             wheelRB.setPower(-power + correction);
 
             //set wheelPositions
@@ -329,9 +329,9 @@ public class RedLine extends LinearOpMode {
             telemetry.update();
 
             wheelLF.setPower(power - correction);
-            wheelLB.setPower(-power - correction);
             wheelRF.setPower(-power + correction);
             wheelRB.setPower(power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -347,6 +347,7 @@ public class RedLine extends LinearOpMode {
         wheelLB.setPower(0);
     }
 
+    //verander naar targetdistance en dan wachten tot behaald
     //Turn Left with distance
     private void TurnLeft(int distance, double power){
         //set to run to position
@@ -386,6 +387,8 @@ public class RedLine extends LinearOpMode {
             wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
+
+        targetAngle = getAngle();
 
         //set power to 0
         wheelLF.setPower(0);
@@ -433,6 +436,8 @@ public class RedLine extends LinearOpMode {
             wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
         }
 
+        targetAngle = getAngle();
+
         //set power to 0
         wheelLF.setPower(0);
         wheelRF.setPower(0);
@@ -441,10 +446,14 @@ public class RedLine extends LinearOpMode {
     }
 
     //convert cm to encoder ticks
-    private int CMToTicks(double CM){
+    private int CMToTicks(double CM, boolean side){
         double tickCM = 1120 / 26.928;
         tickCM *= (100f/141f);
         long ticks = Math.round(tickCM * CM);
+
+        if(side)
+            ticks *= Math.sqrt(2);
+
         return (int) ticks;
     }
 
@@ -463,23 +472,21 @@ public class RedLine extends LinearOpMode {
 
 
 
-    private double checkDirection()
-    {
+    private double checkDirection(){
         double angle = getAngle();
         double gain = .05;
 
-        if (angle == 0)
+        if (angle == targetAngle)
             correction = 0;
         else
-            correction = -angle;
+            correction = targetAngle - angle;
 
         correction = correction * gain;
 
         return correction;
     }
 
-    private double getAngle()
-    {
+    private double getAngle(){
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
