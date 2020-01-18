@@ -120,16 +120,17 @@ public class RedBuildPlateLine extends LinearOpMode {
     //autonomous sequence
     private void AutonomousSequence(){
         DriveForward(CMToTicks(10, false), 0.4);
-        DriveRight(CMToTicks(60, true), 0.4);
-        DriveForward(CMToTicks(90, false), 0.4);
+        DriveRight(CMToTicks(40, true), 0.4);
+        DriveForward(CMToTicks(40, false), 0.4);
         DriveForward(CMToTicks(40, false), 0.2);
         MoveBuildPlate(true);
-        DriveBackward(CMToTicks(150, false), 0.4);
-        Turn(50, 0.5);
+        DriveBackward(CMToTicks(80, false), 0.4);
+        Turn(90, 0.5);
         MoveBuildPlate(false);
-        DriveLeft(CMToTicks(170, true), 0.4);
-        Turn(-50, 0.5);
-        DriveBackward(CMToTicks(50, false), 0.2);
+        DriveBackward(CMToTicks(40, false), 0.8);
+        Turn(-180, 0.5);
+        DriveForward(CMToTicks(30, false), 0.8);
+        DriveLeft(CMToTicks(20, true), 0.5);
     }
 
 
@@ -169,10 +170,10 @@ public class RedBuildPlateLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power + correction);
-            wheelRF.setPower(power - correction);
-            wheelRB.setPower(power - correction);
-            wheelLB.setPower(power + correction);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -223,10 +224,10 @@ public class RedBuildPlateLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power + correction);
-            wheelRF.setPower(-power - correction);
-            wheelRB.setPower(-power - correction);
-            wheelLB.setPower(-power + correction);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -278,10 +279,10 @@ public class RedBuildPlateLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power + correction);
-            wheelRF.setPower(power - correction);
-            wheelRB.setPower(-power - correction);
-            wheelLB.setPower(power + correction);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -332,10 +333,10 @@ public class RedBuildPlateLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power + correction);
-            wheelRF.setPower(-power - correction);
-            wheelRB.setPower(power - correction);
-            wheelLB.setPower(-power + correction);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -356,16 +357,16 @@ public class RedBuildPlateLine extends LinearOpMode {
         double flexibility = 5;
 
         //set targetAngle
-        targetAngle += turnAmount;
+        targetAngle -= turnAmount;
 
 
-        while (globalAngle < targetAngle - flexibility){
+        while (globalAngle < targetAngle - flexibility && !isStopRequested()){
 
             //set power
-            wheelLF.setPower(power * 1);
-            wheelRF.setPower(power * -1);
-            wheelRB.setPower(power * -1);
-            wheelLB.setPower(power * 1);
+            wheelLF.setPower(power * -1);
+            wheelRF.setPower(power * 1);
+            wheelRB.setPower(power * 1);
+            wheelLB.setPower(power * -1);
 
             //update globalAngle
             getAngle();
@@ -373,13 +374,13 @@ public class RedBuildPlateLine extends LinearOpMode {
             idle();
         }
 
-        while (globalAngle > targetAngle + flexibility){
+        while (globalAngle > targetAngle + flexibility && !isStopRequested()){
 
             //set power
-            wheelLF.setPower(power * -1);
-            wheelRF.setPower(power * 1);
-            wheelRB.setPower(power * 1);
-            wheelLB.setPower(power * -1);
+            wheelLF.setPower(power * 1);
+            wheelRF.setPower(power * -1);
+            wheelRB.setPower(power * -1);
+            wheelLB.setPower(power * 1);
 
             //update globalAngle
             getAngle();
@@ -425,12 +426,13 @@ public class RedBuildPlateLine extends LinearOpMode {
 
     //convert cm to encoder ticks
     private int CMToTicks(double CM, boolean side){
+        if(side) {
+            CM *= Math.sqrt(2);
+        }
+
         double tickCM = 1120 / 26.928;
         tickCM *= (100f/141f);
         long ticks = Math.round(tickCM * CM);
-
-        if(side)
-            ticks *= Math.sqrt(2);
 
         return (int) ticks;
     }

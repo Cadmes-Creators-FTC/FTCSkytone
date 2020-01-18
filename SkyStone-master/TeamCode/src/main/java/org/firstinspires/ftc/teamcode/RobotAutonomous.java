@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import java.security.cert.TrustAnchor;
+
 
 @SuppressWarnings({"RedundantThrows", "SameParameterValue", "unused"})
 @Autonomous (name="RobotAutonomous", group="Autonomous")
@@ -159,10 +161,10 @@ public class RobotAutonomous extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power + correction);
-            wheelRF.setPower(power - correction);
-            wheelRB.setPower(power - correction);
-            wheelLB.setPower(power + correction);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -213,10 +215,10 @@ public class RobotAutonomous extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power + correction);
-            wheelRF.setPower(-power - correction);
-            wheelRB.setPower(-power - correction);
-            wheelLB.setPower(-power + correction);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -268,10 +270,10 @@ public class RobotAutonomous extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power + correction);
-            wheelRF.setPower(power - correction);
-            wheelRB.setPower(-power - correction);
-            wheelLB.setPower(power + correction);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -322,10 +324,10 @@ public class RobotAutonomous extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power + correction);
-            wheelRF.setPower(-power - correction);
-            wheelRB.setPower(power - correction);
-            wheelLB.setPower(-power + correction);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -346,16 +348,16 @@ public class RobotAutonomous extends LinearOpMode {
         double flexibility = 5;
 
         //set targetAngle
-        targetAngle += turnAmount;
+        targetAngle -= turnAmount;
 
 
-        while (globalAngle < targetAngle - flexibility){
+        while (globalAngle < targetAngle - flexibility && !isStopRequested()){
 
             //set power
-            wheelLF.setPower(power * 1);
-            wheelRF.setPower(power * -1);
-            wheelRB.setPower(power * -1);
-            wheelLB.setPower(power * 1);
+            wheelLF.setPower(power * -1);
+            wheelRF.setPower(power * 1);
+            wheelRB.setPower(power * 1);
+            wheelLB.setPower(power * -1);
 
             //update globalAngle
             getAngle();
@@ -363,13 +365,13 @@ public class RobotAutonomous extends LinearOpMode {
             idle();
         }
 
-        while (globalAngle > targetAngle + flexibility){
+        while (globalAngle > targetAngle + flexibility && !isStopRequested()){
 
             //set power
-            wheelLF.setPower(power * -1);
-            wheelRF.setPower(power * 1);
-            wheelRB.setPower(power * 1);
-            wheelLB.setPower(power * -1);
+            wheelLF.setPower(power * 1);
+            wheelRF.setPower(power * -1);
+            wheelRB.setPower(power * -1);
+            wheelLB.setPower(power * 1);
 
             //update globalAngle
             getAngle();
@@ -415,12 +417,13 @@ public class RobotAutonomous extends LinearOpMode {
 
     //convert cm to encoder ticks
     private int CMToTicks(double CM, boolean side){
+        if(side) {
+            CM *= Math.sqrt(2);
+        }
+
         double tickCM = 1120 / 26.928;
         tickCM *= (100f/141f);
         long ticks = Math.round(tickCM * CM);
-
-        if(side)
-            ticks *= Math.sqrt(2);
 
         return (int) ticks;
     }

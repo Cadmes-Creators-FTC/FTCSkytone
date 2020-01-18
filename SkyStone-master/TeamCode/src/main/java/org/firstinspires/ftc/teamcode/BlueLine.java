@@ -119,9 +119,10 @@ public class BlueLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10, false), 0.7);
-        DriveRight(CMToTicks(65, true), 0.7);
-        DriveBackward(CMToTicks(15, false), 0.4);
+        DriveForward(CMToTicks(10, false), 0.5);
+        Turn(90, 0.5);
+        DriveForward(CMToTicks(69, false), 0.5);
+        DriveRight(CMToTicks(35, true),0.3);
     }
 
 
@@ -161,10 +162,10 @@ public class BlueLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power + correction);
-            wheelRF.setPower(power - correction);
-            wheelRB.setPower(power - correction);
-            wheelLB.setPower(power + correction);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -215,10 +216,10 @@ public class BlueLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power + correction);
-            wheelRF.setPower(-power - correction);
-            wheelRB.setPower(-power - correction);
-            wheelLB.setPower(-power + correction);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -270,10 +271,10 @@ public class BlueLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(-power + correction);
-            wheelRF.setPower(power - correction);
-            wheelRB.setPower(-power - correction);
-            wheelLB.setPower(power + correction);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -324,10 +325,10 @@ public class BlueLine extends LinearOpMode {
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            wheelLF.setPower(power + correction);
-            wheelRF.setPower(-power - correction);
-            wheelRB.setPower(power - correction);
-            wheelLB.setPower(-power + correction);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -348,16 +349,16 @@ public class BlueLine extends LinearOpMode {
         double flexibility = 5;
 
         //set targetAngle
-        targetAngle += turnAmount;
+        targetAngle -= turnAmount;
 
 
-        while (globalAngle < targetAngle - flexibility){
+        while (globalAngle < targetAngle - flexibility && !isStopRequested()){
 
             //set power
-            wheelLF.setPower(power * 1);
-            wheelRF.setPower(power * -1);
-            wheelRB.setPower(power * -1);
-            wheelLB.setPower(power * 1);
+            wheelLF.setPower(power * -1);
+            wheelRF.setPower(power * 1);
+            wheelRB.setPower(power * 1);
+            wheelLB.setPower(power * -1);
 
             //update globalAngle
             getAngle();
@@ -365,13 +366,13 @@ public class BlueLine extends LinearOpMode {
             idle();
         }
 
-        while (globalAngle > targetAngle + flexibility){
+        while (globalAngle > targetAngle + flexibility && !isStopRequested()){
 
             //set power
-            wheelLF.setPower(power * -1);
-            wheelRF.setPower(power * 1);
-            wheelRB.setPower(power * 1);
-            wheelLB.setPower(power * -1);
+            wheelLF.setPower(power * 1);
+            wheelRF.setPower(power * -1);
+            wheelRB.setPower(power * -1);
+            wheelLB.setPower(power * 1);
 
             //update globalAngle
             getAngle();
@@ -417,12 +418,13 @@ public class BlueLine extends LinearOpMode {
 
     //convert cm to encoder ticks
     private int CMToTicks(double CM, boolean side){
+        if(side) {
+            CM *= Math.sqrt(2);
+        }
+
         double tickCM = 1120 / 26.928;
         tickCM *= (100f/141f);
         long ticks = Math.round(tickCM * CM);
-
-        if(side)
-            ticks *= Math.sqrt(2);
 
         return (int) ticks;
     }
