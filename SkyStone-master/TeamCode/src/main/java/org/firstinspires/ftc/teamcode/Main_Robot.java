@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -23,6 +24,9 @@ public class Main_Robot extends LinearOpMode {
     //build plate
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
+
+    //arm
+    private Servo armFoldOutServo;
 
     //capstone
     private Servo dropCapStoneServo;
@@ -50,6 +54,9 @@ public class Main_Robot extends LinearOpMode {
 
             //drop capstone
             CapStoneDrop();
+
+            //fol arm out
+            ArmFoldOut();
 
             //update telemetry
             telemetry.update();
@@ -87,16 +94,19 @@ public class Main_Robot extends LinearOpMode {
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
         dropCapStoneServo = hardwareMap.get(Servo.class, "DropCapStoneServo");
+        armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
-        dropCapStoneServo.scaleRange(.4, .7);
+        dropCapStoneServo.scaleRange(.2, .7);
+        armFoldOutServo.scaleRange(.3, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
         dropCapStoneServo.setPosition(1);
+        armFoldOutServo.setPosition(0);
     }
 
 
@@ -166,6 +176,15 @@ public class Main_Robot extends LinearOpMode {
             dropCapStoneServo.setPosition(1);
         }else if (gamepad2.a){
             dropCapStoneServo.setPosition(0);
+        }
+    }
+
+    //arm
+    private void ArmFoldOut(){
+        if(gamepad2.left_bumper){
+            armFoldOutServo.setPosition(0);
+        }else if (gamepad2.right_bumper){
+            armFoldOutServo.setPosition(1);
         }
     }
 }
