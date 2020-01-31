@@ -12,14 +12,23 @@ public class Test extends LinearOpMode {
     @Override
     public void runOpMode () {
 
+        telemetry.addData("State", "initialized");
+        telemetry.update();
 
         MapHardware();
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        while (opModeIsActive()){
+
+            telemetry.addData("State", "Running");
+            telemetry.update();
 
         }
+
+        telemetry.addData("State", "Disabled");
+        telemetry.update();
+
     }
 
 

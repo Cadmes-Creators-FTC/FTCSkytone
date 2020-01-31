@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -34,7 +33,7 @@ public class Main_Robot extends LinearOpMode {
     @Override
     public void runOpMode (){
 
-        telemetry.addData("running?", "true");
+        telemetry.addData("State", "initialized");
         telemetry.update();
 
         MapHardware();
@@ -42,6 +41,9 @@ public class Main_Robot extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
+
+            telemetry.addData("State", "Running");
+            telemetry.update();
 
             //drive and turn
             DriveWithController();
@@ -57,10 +59,10 @@ public class Main_Robot extends LinearOpMode {
 
             //fol arm out
             ArmFoldOut();
-
-            //update telemetry
-            telemetry.update();
         }
+
+        telemetry.addData("State", "Disabled");
+        telemetry.update();
 
     }
 
@@ -73,15 +75,9 @@ public class Main_Robot extends LinearOpMode {
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
 
-        //set drive wheels encoders modes
-        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         //reverse drive wheels
-        wheelRF.setDirection(DcMotor.Direction.REVERSE);
-        wheelRB.setDirection(DcMotor.Direction.REVERSE);
+        wheelLF.setDirection(DcMotor.Direction.REVERSE);
+        wheelLB.setDirection(DcMotor.Direction.REVERSE);
 
         //assign intake wheels
         intakeWheelLeft = hardwareMap.get(DcMotor.class, "IntakeWheelLeft");
@@ -121,25 +117,25 @@ public class Main_Robot extends LinearOpMode {
         double inputLB = 0;
         double inputRB = 0;
 
-        inputLF -= joyX;
-        inputRF += joyX;
-        inputLB += joyX;
-        inputRB -= joyX;
+        inputLF += joyX;
+        inputRF -= joyX;
+        inputRB += joyX;
+        inputLB -= joyX;
 
-        inputLF += joyY;
-        inputRF += joyY;
-        inputLB += joyY;
-        inputRB += joyY;
+        inputLF -= joyY;
+        inputRF -= joyY;
+        inputRB -= joyY;
+        inputLB -= joyY;
 
-        inputLF -= joyR;
-        inputRF += joyR;
-        inputLB -= joyR;
-        inputRB += joyR;
+        inputLF += joyR;
+        inputRF -= joyR;
+        inputRB -= joyR;
+        inputLB += joyR;
 
         wheelLF.setPower(inputLF * inputLF * inputLF);
         wheelRF.setPower(inputRF * inputRF * inputRF);
-        wheelLB.setPower(inputLB * inputLB * inputLB);
         wheelRB.setPower(inputRB * inputRB * inputRB);
+        wheelLB.setPower(inputLB * inputLB * inputLB);
     }
 
 
