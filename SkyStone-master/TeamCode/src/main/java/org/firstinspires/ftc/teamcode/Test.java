@@ -21,12 +21,17 @@ public class Test extends LinearOpMode {
     @Override
     public void runOpMode () {
 
+        telemetry.addData("State", "initialized");
+        telemetry.update();
 
         MapHardware();
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        while (opModeIsActive()){
+
+            telemetry.addData("State", "Running");
+            telemetry.update();
 
             float JoyStickY = gamepad1.left_stick_y;
             LeftForward.setPower(JoyStickY);
@@ -36,6 +41,10 @@ public class Test extends LinearOpMode {
 
 
         }
+
+        telemetry.addData("State", "Disabled");
+        telemetry.update();
+
     }
 
 

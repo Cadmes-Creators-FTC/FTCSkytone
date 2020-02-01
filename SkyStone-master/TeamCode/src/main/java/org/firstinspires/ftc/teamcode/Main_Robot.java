@@ -24,13 +24,16 @@ public class Main_Robot extends LinearOpMode {
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
 
+    //arm
+    private Servo armFoldOutServo;
+
     //capstone
     private Servo dropCapStoneServo;
 
     @Override
     public void runOpMode (){
 
-        telemetry.addData("running?", "true");
+        telemetry.addData("State", "initialized");
         telemetry.update();
 
         MapHardware();
@@ -38,6 +41,9 @@ public class Main_Robot extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
+
+            telemetry.addData("State", "Running");
+            telemetry.update();
 
             //drive and turn
             DriveWithController();
@@ -51,9 +57,12 @@ public class Main_Robot extends LinearOpMode {
             //drop capstone
             CapStoneDrop();
 
-            //update telemetry
-            telemetry.update();
+            //fol arm out
+            ArmFoldOut();
         }
+
+        telemetry.addData("State", "Disabled");
+        telemetry.update();
 
     }
 
@@ -66,15 +75,9 @@ public class Main_Robot extends LinearOpMode {
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
 
-        //set drive wheels encoders modes
-        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         //reverse drive wheels
-        wheelRF.setDirection(DcMotor.Direction.REVERSE);
-        wheelRB.setDirection(DcMotor.Direction.REVERSE);
+        wheelLF.setDirection(DcMotor.Direction.REVERSE);
+        wheelLB.setDirection(DcMotor.Direction.REVERSE);
 
         //assign intake wheels
         intakeWheelLeft = hardwareMap.get(DcMotor.class, "IntakeWheelLeft");
@@ -87,16 +90,19 @@ public class Main_Robot extends LinearOpMode {
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
         dropCapStoneServo = hardwareMap.get(Servo.class, "DropCapStoneServo");
+        armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
-        dropCapStoneServo.scaleRange(.4, .7);
+        dropCapStoneServo.scaleRange(.2, .7);
+        armFoldOutServo.scaleRange(.3, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
         dropCapStoneServo.setPosition(1);
+        armFoldOutServo.setPosition(0);
     }
 
 
@@ -111,25 +117,25 @@ public class Main_Robot extends LinearOpMode {
         double inputLB = 0;
         double inputRB = 0;
 
-        inputLF -= joyX;
-        inputRF += joyX;
-        inputLB += joyX;
-        inputRB -= joyX;
+        inputLF += joyX;
+        inputRF -= joyX;
+        inputRB += joyX;
+        inputLB -= joyX;
 
-        inputLF += joyY;
-        inputRF += joyY;
-        inputLB += joyY;
-        inputRB += joyY;
+        inputLF -= joyY;
+        inputRF -= joyY;
+        inputRB -= joyY;
+        inputLB -= joyY;
 
-        inputLF -= joyR;
-        inputRF += joyR;
-        inputLB -= joyR;
-        inputRB += joyR;
+        inputLF += joyR;
+        inputRF -= joyR;
+        inputRB -= joyR;
+        inputLB += joyR;
 
         wheelLF.setPower(inputLF * inputLF * inputLF);
         wheelRF.setPower(inputRF * inputRF * inputRF);
-        wheelLB.setPower(inputLB * inputLB * inputLB);
         wheelRB.setPower(inputRB * inputRB * inputRB);
+        wheelLB.setPower(inputLB * inputLB * inputLB);
     }
 
 
@@ -166,6 +172,15 @@ public class Main_Robot extends LinearOpMode {
             dropCapStoneServo.setPosition(1);
         }else if (gamepad2.a){
             dropCapStoneServo.setPosition(0);
+        }
+    }
+
+    //arm
+    private void ArmFoldOut(){
+        if(gamepad2.left_bumper){
+            armFoldOutServo.setPosition(0);
+        }else if (gamepad2.right_bumper){
+            armFoldOutServo.setPosition(1);
         }
     }
 }
