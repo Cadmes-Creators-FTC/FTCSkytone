@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,6 +15,7 @@ public class Main_Robot extends LinearOpMode {
 
     //sound
     MediaPlayer lightsaberSound;
+    MediaPlayer bruhSound;
 
     //wheels
     private DcMotor wheelLF;
@@ -50,6 +52,9 @@ public class Main_Robot extends LinearOpMode {
             telemetry.addData("State", "Running");
             telemetry.update();
 
+            //play a sound
+            PlaySound();
+
             //drive and turn
             DriveWithController();
 
@@ -76,6 +81,7 @@ public class Main_Robot extends LinearOpMode {
     private void MapHardware(){
         //sound
         lightsaberSound = MediaPlayer.create(hardwareMap.appContext, R.raw.ss_light_saber);
+        bruhSound = MediaPlayer.create(hardwareMap.appContext, R.raw.bruhsoundeffect);
 
         //assign drive wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
@@ -111,6 +117,13 @@ public class Main_Robot extends LinearOpMode {
         buildPlateServoRight.setPosition(1);
         dropCapStoneServo.setPosition(1);
         armFoldOutServo.setPosition(0);
+    }
+
+
+    private void PlaySound(){
+        if(gamepad1.x ||gamepad2.x){
+            bruhSound.start();
+        }
     }
 
 
