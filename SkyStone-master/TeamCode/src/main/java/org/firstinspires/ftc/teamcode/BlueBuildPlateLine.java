@@ -31,10 +31,10 @@ public class BlueBuildPlateLine extends LinearOpMode {
     private int wheelLBPos = 0;
 
 
-    //build plate
-    //move build plate
+    //servos
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
+    private Servo armFoldOutServo;
 
 
     //IMU
@@ -89,14 +89,17 @@ public class BlueBuildPlateLine extends LinearOpMode {
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
+        armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
+        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
+        armFoldOutServo.setPosition(0);
 
         //imu
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -143,6 +146,12 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
+        //set to run to position
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
@@ -179,6 +188,12 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
         wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+
+        //set to run to position
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -218,6 +233,12 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
 
+        //set to run to position
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
@@ -254,6 +275,12 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
         wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
         wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+
+        //set to run to position
+        wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 

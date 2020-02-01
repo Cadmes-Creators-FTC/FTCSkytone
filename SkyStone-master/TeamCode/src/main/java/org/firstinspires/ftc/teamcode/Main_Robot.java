@@ -96,7 +96,7 @@ public class Main_Robot extends LinearOpMode {
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
         dropCapStoneServo.scaleRange(.2, .7);
-        armFoldOutServo.scaleRange(.3, 1);
+        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
