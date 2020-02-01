@@ -19,7 +19,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotAutonomous.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="670">
+=======
+            <state relative-caret-position="1309">
+>>>>>>> 246348b98063c9b743dc971716d1a06e4537f0e8
               <caret line="86" selection-start-line="86" selection-end-line="86" />
             </state>
           </provider>
@@ -28,7 +32,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RedLine.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="980">
+=======
+            <state relative-caret-position="1190">
+>>>>>>> 246348b98063c9b743dc971716d1a06e4537f0e8
               <caret line="79" column="39" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
             </state>
           </provider>
@@ -72,6 +80,32 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
+=======
+      <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Source Files'; set:Project Source Files; class com.jetbrains.cidr.lang.search.scopes.ProjectSourcesScopeProvider$SourceFilesScope">
+          <expand>
+            <path>
+              <item name="FTCSkytone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\astrid\OneDrive - Udens College\programmern\arduino\Documenten\GitHub\FTCSkytone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="FTCSkytone" type="1abcf292:AndroidViewProjectNode" />
+              <item name="FTCSkytone" type="e9137016:NonAndroidModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+>>>>>>> 246348b98063c9b743dc971716d1a06e4537f0e8
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -267,7 +301,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+=======
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+>>>>>>> 246348b98063c9b743dc971716d1a06e4537f0e8
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.33489934" />
@@ -322,9 +360,22 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RedLine.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="980">
+=======
+    <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotAutonomous.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1309">
+          <caret line="86" selection-start-line="86" selection-end-line="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RedLine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1190">
+>>>>>>> 246348b98063c9b743dc971716d1a06e4537f0e8
           <caret line="79" column="39" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
         </state>
       </provider>
