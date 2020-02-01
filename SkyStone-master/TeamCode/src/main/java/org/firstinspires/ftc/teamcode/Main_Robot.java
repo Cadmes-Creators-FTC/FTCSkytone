@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.media.MediaPlayer;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +11,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Main_Robot", group = "TeleOp")
 public class Main_Robot extends LinearOpMode {
+
+    //sound
+    MediaPlayer lightsaberSound;
 
     //wheels
     private DcMotor wheelLF;
@@ -69,6 +74,9 @@ public class Main_Robot extends LinearOpMode {
 
     //map hardware
     private void MapHardware(){
+        //sound
+        lightsaberSound = MediaPlayer.create(hardwareMap.appContext, R.raw.ss_light_saber);
+
         //assign drive wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -179,8 +187,10 @@ public class Main_Robot extends LinearOpMode {
     private void ArmFoldOut(){
         if(gamepad2.left_bumper){
             armFoldOutServo.setPosition(0);
+            lightsaberSound.start();
         }else if (gamepad2.right_bumper){
             armFoldOutServo.setPosition(1);
+            lightsaberSound.start();
         }
     }
 }
