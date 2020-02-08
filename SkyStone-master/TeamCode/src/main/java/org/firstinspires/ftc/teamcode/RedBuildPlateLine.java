@@ -403,4 +403,11 @@ public class RedBuildPlateLine extends LinearOpMode {
         }
         sleep(500);
     }
+
+    private void FoldArm(boolean Down){
+        if(Down)
+            armFoldOutServo.setPosition(1);
+        else
+            armFoldOutServo.setPosition(0);
+    }
 }

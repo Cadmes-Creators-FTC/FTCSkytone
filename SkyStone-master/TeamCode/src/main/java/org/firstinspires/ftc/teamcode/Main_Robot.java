@@ -14,7 +14,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Main_Robot extends LinearOpMode {
 
     //sound
+<<<<<<< HEAD
+<<<<<<< HEAD
+    private MediaPlayer lightsaberSound;
+    private MediaPlayer bruhSound;
+=======
     MediaPlayer lightsaberSound;
+<<<<<<< HEAD
+>>>>>>> parent of b1f908a... bruhsound
+=======
+>>>>>>> parent of b1f908a... bruhsound
+=======
+    MediaPlayer lightsaberSound;
+<<<<<<< HEAD
+    MediaPlayer bruhSound;
+>>>>>>> parent of 0525771... voor finale
+=======
+>>>>>>> parent of b1f908a... bruhsound
 
     //wheels
     private DcMotor wheelLF;
@@ -26,11 +42,9 @@ public class Main_Robot extends LinearOpMode {
     private DcMotor intakeWheelLeft;
     private DcMotor intakeWheelRight;
 
-    //build plate
+    //servos
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
-
-    //arm
     private Servo armFoldOutServo;
 
     //capstone

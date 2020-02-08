@@ -117,10 +117,11 @@ public class RedLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10, false), 0.5);
-        Turn(-90, 0.5);
-        DriveForward(CMToTicks(69, false), 0.5);
-        DriveLeft(CMToTicks(35, true),0.3);
+//        DriveForward(CMToTicks(10, false), 0.5);
+//        Turn(-90, 0.5);
+//        DriveForward(CMToTicks(69, false), 0.5);
+//        DriveLeft(CMToTicks(35, true),0.3);
+        FoldArm(true);
     }
 
 
@@ -394,5 +395,12 @@ public class RedLine extends LinearOpMode {
             buildPlateServoRight.setPosition(1);
         }
         sleep(500);
+    }
+
+    private void FoldArm(boolean Down){
+        if(Down)
+            armFoldOutServo.setPosition(1);
+        else
+            armFoldOutServo.setPosition(0);
     }
 }
