@@ -121,7 +121,6 @@ public class RedLine extends LinearOpMode {
 //        Turn(-90, 0.5);
 //        DriveForward(CMToTicks(69, false), 0.5);
 //        DriveLeft(CMToTicks(35, true),0.3);
-        FoldArm(true);
     }
 
 
