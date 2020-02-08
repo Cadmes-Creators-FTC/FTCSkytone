@@ -27,9 +27,11 @@ public class Main_Robot extends LinearOpMode {
     private DcMotor intakeWheelLeft;
     private DcMotor intakeWheelRight;
 
-    //servos
+    //build plate
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
+
+    //arm
     private Servo armFoldOutServo;
 
     //capstone

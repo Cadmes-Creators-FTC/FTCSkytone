@@ -34,7 +34,6 @@ public class BlueLine extends LinearOpMode {
     //servos
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
-    private Servo armFoldOutServo;
 
 
     //IMU
@@ -89,17 +88,14 @@ public class BlueLine extends LinearOpMode {
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
-        armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
-        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
-        armFoldOutServo.setPosition(0);
 
         //imu
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -117,11 +113,10 @@ public class BlueLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-//        DriveForward(CMToTicks(10, false), 0.5);
-//        Turn(90, 0.5);
-//        DriveForward(CMToTicks(69, false), 0.5);
-//        DriveRight(CMToTicks(35, true),0.3);
-        FoldArm(true);
+        DriveForward(CMToTicks(10, false), 0.5);
+        Turn(90, 0.5);
+        DriveForward(CMToTicks(69, false), 0.5);
+        DriveRight(CMToTicks(35, true),0.3);
     }
 
 
@@ -395,12 +390,5 @@ public class BlueLine extends LinearOpMode {
             buildPlateServoRight.setPosition(1);
         }
         sleep(500);
-    }
-
-    private void FoldArm(boolean Down){
-        if(Down)
-            armFoldOutServo.setPosition(1);
-        else
-            armFoldOutServo.setPosition(0);
     }
 }
