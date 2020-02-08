@@ -34,7 +34,6 @@ public class BlueLine extends LinearOpMode {
     //servos
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
-    private Servo armFoldOutServo;
 
 
     //IMU
@@ -49,7 +48,7 @@ public class BlueLine extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        MapHardware();
+        Setup();
 
         //wait for gyro calibration
         while (!isStopRequested() && !imu.isGyroCalibrated()) {
@@ -75,7 +74,7 @@ public class BlueLine extends LinearOpMode {
 
 
     //map hardware
-    private void MapHardware(){
+    private void Setup(){
         //map wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -89,17 +88,14 @@ public class BlueLine extends LinearOpMode {
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
-        armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
-        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
-        armFoldOutServo.setPosition(0);
 
         //imu
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -132,17 +128,17 @@ public class BlueLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //initialize wheel positions
-        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
-
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //initialize wheel positions
+        wheelLFPos = 0;
+        wheelRFPos = 0;
+        wheelRBPos = 0;
+        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -175,17 +171,17 @@ public class BlueLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //initialize wheel positions
-        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
-
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //initialize wheel positions
+        wheelLFPos = 0;
+        wheelRFPos = 0;
+        wheelRBPos = 0;
+        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -219,17 +215,17 @@ public class BlueLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //initialize wheel positions
-        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
-
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //initialize wheel positions
+        wheelLFPos = 0;
+        wheelRFPos = 0;
+        wheelRBPos = 0;
+        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -262,17 +258,17 @@ public class BlueLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //initialize wheel positions
-        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
-        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
-        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
-        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
-
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //initialize wheel positions
+        wheelLFPos = 0;
+        wheelRFPos = 0;
+        wheelRBPos = 0;
+        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
@@ -344,29 +340,24 @@ public class BlueLine extends LinearOpMode {
 
     //imu gyro sensor
     private double GetCorrection(){
-        double angle = getAngle();
         double gain = .05;
 
-        if (angle == targetAngle)
+        getAngle();
+
+        if (globalAngle == targetAngle)
             correction = 0;
         else
-            correction = targetAngle - angle;
+            correction = targetAngle - globalAngle;
 
-        correction = correction * gain;
+        correction *= gain;
 
         return correction;
     }
 
-    private double getAngle(){
+    private void getAngle(){
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
+        globalAngle = angles.firstAngle;
     }
 
 

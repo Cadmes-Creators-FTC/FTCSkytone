@@ -14,8 +14,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Main_Robot extends LinearOpMode {
 
     //sound
-    MediaPlayer lightsaberSound;
-    MediaPlayer bruhSound;
+    private MediaPlayer lightsaberSound;
+    private MediaPlayer bruhSound;
 
     //wheels
     private DcMotor wheelLF;
@@ -43,7 +43,7 @@ public class Main_Robot extends LinearOpMode {
         telemetry.addData("State", "initialized");
         telemetry.update();
 
-        MapHardware();
+        Setup();
 
         waitForStart();
 
@@ -78,7 +78,7 @@ public class Main_Robot extends LinearOpMode {
 
 
     //map hardware
-    private void MapHardware(){
+    private void Setup(){
         //sound
         lightsaberSound = MediaPlayer.create(hardwareMap.appContext, R.raw.ss_light_saber);
         bruhSound = MediaPlayer.create(hardwareMap.appContext, R.raw.bruhsoundeffect);
@@ -153,10 +153,10 @@ public class Main_Robot extends LinearOpMode {
         inputRB -= joyR;
         inputLB += joyR;
 
-        wheelLF.setPower(inputLF * inputLF * inputLF);
-        wheelRF.setPower(inputRF * inputRF * inputRF);
-        wheelRB.setPower(inputRB * inputRB * inputRB);
-        wheelLB.setPower(inputLB * inputLB * inputLB);
+        wheelLF.setPower(Math.pow(inputLF, 3));
+        wheelRF.setPower(Math.pow(inputRF, 3));
+        wheelRB.setPower(Math.pow(inputRB, 3));
+        wheelLB.setPower(Math.pow(inputLB, 3));
     }
 
 
