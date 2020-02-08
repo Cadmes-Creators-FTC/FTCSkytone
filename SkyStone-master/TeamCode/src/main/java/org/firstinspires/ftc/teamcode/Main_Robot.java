@@ -14,6 +14,7 @@ public class Main_Robot extends LinearOpMode {
 
     //sound
 <<<<<<< HEAD
+<<<<<<< HEAD
     private MediaPlayer lightsaberSound;
     private MediaPlayer bruhSound;
 =======
@@ -22,6 +23,10 @@ public class Main_Robot extends LinearOpMode {
 >>>>>>> parent of b1f908a... bruhsound
 =======
 >>>>>>> parent of b1f908a... bruhsound
+=======
+    MediaPlayer lightsaberSound;
+    MediaPlayer bruhSound;
+>>>>>>> parent of 0525771... voor finale
 
     //wheels
     private DcMotor wheelLF;
@@ -47,7 +52,7 @@ public class Main_Robot extends LinearOpMode {
         telemetry.addData("State", "initialized");
         telemetry.update();
 
-        Setup();
+        MapHardware();
 
         waitForStart();
 
@@ -79,7 +84,7 @@ public class Main_Robot extends LinearOpMode {
 
 
     //map hardware
-    private void Setup(){
+    private void MapHardware(){
         //sound
         lightsaberSound = MediaPlayer.create(hardwareMap.appContext, R.raw.ss_light_saber);
 
@@ -146,10 +151,10 @@ public class Main_Robot extends LinearOpMode {
         inputRB -= joyR;
         inputLB += joyR;
 
-        wheelLF.setPower(Math.pow(inputLF, 3));
-        wheelRF.setPower(Math.pow(inputRF, 3));
-        wheelRB.setPower(Math.pow(inputRB, 3));
-        wheelLB.setPower(Math.pow(inputLB, 3));
+        wheelLF.setPower(inputLF * inputLF * inputLF);
+        wheelRF.setPower(inputRF * inputRF * inputRF);
+        wheelRB.setPower(inputRB * inputRB * inputRB);
+        wheelLB.setPower(inputLB * inputLB * inputLB);
     }
 
 

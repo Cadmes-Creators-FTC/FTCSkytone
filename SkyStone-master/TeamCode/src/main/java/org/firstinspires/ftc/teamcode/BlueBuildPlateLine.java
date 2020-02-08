@@ -49,6 +49,8 @@ public class BlueBuildPlateLine extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
+        MapHardware();
+
         //wait for gyro calibration
         while (!isStopRequested() && !imu.isGyroCalibrated()) {
             sleep(50);
@@ -73,7 +75,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
 
     //map hardware
-    private void Setup(){
+    private void MapHardware(){
         //map wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -92,6 +94,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
+        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
@@ -137,17 +140,17 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //initialize wheel positions
+        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
+        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
+        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
+        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //initialize wheel positions
-        wheelLFPos = 0;
-        wheelRFPos = 0;
-        wheelRBPos = 0;
-        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -180,17 +183,17 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //initialize wheel positions
+        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
+        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
+        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
+        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //initialize wheel positions
-        wheelLFPos = 0;
-        wheelRFPos = 0;
-        wheelRBPos = 0;
-        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -224,17 +227,17 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //initialize wheel positions
+        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
+        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
+        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
+        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //initialize wheel positions
-        wheelLFPos = 0;
-        wheelRFPos = 0;
-        wheelRBPos = 0;
-        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
@@ -267,17 +270,17 @@ public class BlueBuildPlateLine extends LinearOpMode {
         wheelRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //initialize wheel positions
+        wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
+        wheelRFPos = Math.abs(wheelRF.getCurrentPosition());
+        wheelRBPos = Math.abs(wheelRB.getCurrentPosition());
+        wheelLBPos = Math.abs(wheelLB.getCurrentPosition());
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wheelLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //initialize wheel positions
-        wheelLFPos = 0;
-        wheelRFPos = 0;
-        wheelRBPos = 0;
-        wheelLBPos = 0;
 
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
@@ -349,24 +352,29 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     //imu gyro sensor
     private double GetCorrection(){
+        double angle = getAngle();
         double gain = .05;
 
-        getAngle();
-
-        if (globalAngle == targetAngle)
+        if (angle == targetAngle)
             correction = 0;
         else
-            correction = targetAngle - globalAngle;
+            correction = targetAngle - angle;
 
-        correction *= gain;
+        correction = correction * gain;
 
         return correction;
     }
 
-    private void getAngle(){
+    private double getAngle(){
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        globalAngle = angles.firstAngle;
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
     }
 
 
