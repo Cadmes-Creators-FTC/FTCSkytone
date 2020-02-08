@@ -25,8 +25,11 @@ public class Main_Robot extends LinearOpMode {
 >>>>>>> parent of b1f908a... bruhsound
 =======
     MediaPlayer lightsaberSound;
+<<<<<<< HEAD
     MediaPlayer bruhSound;
 >>>>>>> parent of 0525771... voor finale
+=======
+>>>>>>> parent of b1f908a... bruhsound
 
     //wheels
     private DcMotor wheelLF;
