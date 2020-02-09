@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -115,7 +114,7 @@ public class RobotAutonomous extends LinearOpMode {
 
 
     //Drive Forward with distance
-    private void DriveForward(int distance, double power){
+    public void DriveForward(int distance, double power){
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
