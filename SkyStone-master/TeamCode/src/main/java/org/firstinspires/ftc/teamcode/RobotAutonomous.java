@@ -17,7 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Autonomous (name="RobotAutonomous", group="Autonomous")
 public class RobotAutonomous extends LinearOpMode {
 
-    //wheels
     //motors
     private DcMotor wheelLF;
     private DcMotor wheelRF;
@@ -39,8 +38,6 @@ public class RobotAutonomous extends LinearOpMode {
     //IMU
     private BNO055IMU imu;
     private Orientation lastAngles = new Orientation();
-
-    private double correction;
     private double globalAngle;
     private double targetAngle;
 
@@ -48,7 +45,7 @@ public class RobotAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        MapHardware();
+        Setup();
 
         //wait for gyro calibration
         while (!isStopRequested() && !imu.isGyroCalibrated()) {
@@ -73,8 +70,8 @@ public class RobotAutonomous extends LinearOpMode {
     }
 
 
-    //map hardware
-    private void MapHardware(){
+    //Setup
+    private void Setup(){
         //map wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -140,12 +137,12 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(power - correction);
-            wheelRF.setPower(power + correction);
-            wheelRB.setPower(power + correction);
-            wheelLB.setPower(power - correction);
+            wheelLF.setPower(power - wheelCorrection);
+            wheelRF.setPower(power + wheelCorrection);
+            wheelRB.setPower(power + wheelCorrection);
+            wheelLB.setPower(power - wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -183,12 +180,12 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(-power - correction);
-            wheelRF.setPower(-power + correction);
-            wheelRB.setPower(-power + correction);
-            wheelLB.setPower(-power - correction);
+            wheelLF.setPower(-power - wheelCorrection);
+            wheelRF.setPower(-power + wheelCorrection);
+            wheelRB.setPower(-power + wheelCorrection);
+            wheelLB.setPower(-power - wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -227,12 +224,12 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(-power - correction);
-            wheelRF.setPower(power + correction);
-            wheelRB.setPower(-power + correction);
-            wheelLB.setPower(power - correction);
+            wheelLF.setPower(-power - wheelCorrection);
+            wheelRF.setPower(power + wheelCorrection);
+            wheelRB.setPower(-power + wheelCorrection);
+            wheelLB.setPower(power - wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -270,12 +267,12 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(power - correction);
-            wheelRF.setPower(-power + correction);
-            wheelRB.setPower(power + correction);
-            wheelLB.setPower(-power - correction);
+            wheelLF.setPower(power - wheelCorrection);
+            wheelRF.setPower(-power + wheelCorrection);
+            wheelRB.setPower(power + wheelCorrection);
+            wheelLB.setPower(-power - wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -296,24 +293,10 @@ public class RobotAutonomous extends LinearOpMode {
         double flexibility = 5;
 
         //set targetAngle
-        targetAngle -= turnAmount;
+        targetAngle += turnAmount;
 
 
         while (globalAngle < targetAngle - flexibility && opModeIsActive()){
-
-            //set power
-            wheelLF.setPower(power * -1);
-            wheelRF.setPower(power * 1);
-            wheelRB.setPower(power * 1);
-            wheelLB.setPower(power * -1);
-
-            //update globalAngle
-            getAngle();
-
-            idle();
-        }
-
-        while (globalAngle > targetAngle + flexibility && opModeIsActive()){
 
             //set power
             wheelLF.setPower(power * 1);
@@ -322,7 +305,21 @@ public class RobotAutonomous extends LinearOpMode {
             wheelLB.setPower(power * 1);
 
             //update globalAngle
-            getAngle();
+            UpdateGlobalAngle();
+
+            idle();
+        }
+
+        while (globalAngle > targetAngle + flexibility && opModeIsActive()){
+
+            //set power
+            wheelLF.setPower(power * -1);
+            wheelRF.setPower(power * 1);
+            wheelRB.setPower(power * 1);
+            wheelLB.setPower(power * -1);
+
+            //update globalAngle
+            UpdateGlobalAngle();
 
             idle();
         }
@@ -332,34 +329,6 @@ public class RobotAutonomous extends LinearOpMode {
         wheelRF.setPower(0);
         wheelRB.setPower(0);
         wheelLB.setPower(0);
-    }
-
-
-    //imu gyro sensor
-    private double GetCorrection(){
-        double angle = getAngle();
-        double gain = .05;
-
-        if (angle == targetAngle)
-            correction = 0;
-        else
-            correction = targetAngle - angle;
-
-        correction = correction * gain;
-
-        return correction;
-    }
-
-    private double getAngle(){
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
     }
 
 
@@ -387,5 +356,34 @@ public class RobotAutonomous extends LinearOpMode {
             buildPlateServoRight.setPosition(1);
         }
         sleep(500);
+    }
+
+
+    //imu gyro sensor
+    private void UpdateGlobalAngle(){
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double angleChange = angles.firstAngle - lastAngles.firstAngle;
+
+        globalAngle += angleChange;
+
+        if(globalAngle > 180)
+            globalAngle -= 360;
+        else if (globalAngle < -180)
+            globalAngle += 360;
+
+        lastAngles = angles;
+    }
+    private double GetWheelCorrection(){
+        double gain = .05;
+        double correction = 0;
+        UpdateGlobalAngle();
+
+        if (globalAngle != targetAngle)
+            correction = globalAngle - targetAngle;
+
+        correction *= gain;
+
+        return correction;
     }
 }

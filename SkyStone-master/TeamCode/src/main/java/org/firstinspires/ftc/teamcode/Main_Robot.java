@@ -15,35 +15,28 @@ public class Main_Robot extends LinearOpMode {
 
     //sound
     private MediaPlayer lightsaberSound;
-    private MediaPlayer bruhSound;
 
-    //wheels
+    //motors
     private DcMotor wheelLF;
     private DcMotor wheelRF;
     private DcMotor wheelRB;
     private DcMotor wheelLB;
-
-    //intake
     private DcMotor intakeWheelLeft;
     private DcMotor intakeWheelRight;
 
-    //build plate
+    //servos
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
-
-    //arm
-    private Servo armFoldOutServo;
-
-    //capstone
     private Servo dropCapStoneServo;
+    private Servo armFoldOutServo;
 
     @Override
     public void runOpMode (){
 
+        Setup();
+
         telemetry.addData("State", "initialized");
         telemetry.update();
-
-        MapHardware();
 
         waitForStart();
 
@@ -74,27 +67,18 @@ public class Main_Robot extends LinearOpMode {
     }
 
 
-    //map hardware
-    private void MapHardware(){
-        //sound
+    //Setup
+    private void Setup(){
+        //assign sound
         lightsaberSound = MediaPlayer.create(hardwareMap.appContext, R.raw.ss_light_saber);
 
-        //assign drive wheels
+        //assign motors
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
-
-        //reverse drive wheels
-        wheelLF.setDirection(DcMotor.Direction.REVERSE);
-        wheelLB.setDirection(DcMotor.Direction.REVERSE);
-
-        //assign intake wheels
         intakeWheelLeft = hardwareMap.get(DcMotor.class, "IntakeWheelLeft");
         intakeWheelRight = hardwareMap.get(DcMotor.class, "IntakeWheelRight");
-
-        //reverse intake wheels
-        intakeWheelRight.setDirection(DcMotor.Direction.REVERSE);
 
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
@@ -102,11 +86,15 @@ public class Main_Robot extends LinearOpMode {
         dropCapStoneServo = hardwareMap.get(Servo.class, "DropCapStoneServo");
         armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
+        //reverse motors
+        wheelLF.setDirection(DcMotor.Direction.REVERSE);
+        wheelLB.setDirection(DcMotor.Direction.REVERSE);
+        intakeWheelRight.setDirection(DcMotor.Direction.REVERSE);
+
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
         dropCapStoneServo.scaleRange(.2, .7);
-        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
