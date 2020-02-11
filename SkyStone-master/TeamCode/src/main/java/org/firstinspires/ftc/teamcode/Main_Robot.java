@@ -43,7 +43,7 @@ public class Main_Robot extends LinearOpMode {
         telemetry.addData("State", "initialized");
         telemetry.update();
 
-        MapHardware();
+        Setup();
 
         waitForStart();
 
@@ -75,7 +75,7 @@ public class Main_Robot extends LinearOpMode {
 
 
     //map hardware
-    private void MapHardware(){
+    private void Setup(){
         //sound
         lightsaberSound = MediaPlayer.create(hardwareMap.appContext, R.raw.ss_light_saber);
 

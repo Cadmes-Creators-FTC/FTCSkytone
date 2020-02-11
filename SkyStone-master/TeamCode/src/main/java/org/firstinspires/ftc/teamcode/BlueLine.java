@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -17,7 +16,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Autonomous (name="BlueLine", group="Autonomous")
 public class BlueLine extends LinearOpMode {
 
-    //wheels
     //motors
     private DcMotor wheelLF;
     private DcMotor wheelRF;
@@ -48,7 +46,7 @@ public class BlueLine extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        MapHardware();
+        Setup();
 
         //wait for gyro calibration
         while (!isStopRequested() && !imu.isGyroCalibrated()) {
@@ -74,7 +72,7 @@ public class BlueLine extends LinearOpMode {
 
 
     //map hardware
-    private void MapHardware(){
+    private void Setup(){
         //map wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -122,6 +120,8 @@ public class BlueLine extends LinearOpMode {
 
     //Drive Forward with distance
     private void DriveForward(int distance, double power){
+        distance = CMToTicks(distance, false);
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -165,6 +165,8 @@ public class BlueLine extends LinearOpMode {
     }
     //Drive Backward with distance
     private void DriveBackward(int distance, double power){
+        distance = CMToTicks(distance, false);
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -209,6 +211,8 @@ public class BlueLine extends LinearOpMode {
 
     //Drive Left with distance
     private void DriveLeft(int distance, double power){
+        distance = CMToTicks(distance, true);
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -252,6 +256,8 @@ public class BlueLine extends LinearOpMode {
     }
     //Drive Right with distance
     private void DriveRight(int distance, double power){
+        distance = CMToTicks(distance, true);
+
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -301,6 +307,11 @@ public class BlueLine extends LinearOpMode {
         //set targetAngle
         targetAngle -= turnAmount;
 
+        if(targetAngle < -180)
+            targetAngle += 360;
+        else if(targetAngle > 180)
+            targetAngle -= 360;
+
 
         while (globalAngle < targetAngle - flexibility && opModeIsActive()){
 
@@ -311,7 +322,7 @@ public class BlueLine extends LinearOpMode {
             wheelLB.setPower(power * -1);
 
             //update globalAngle
-            getAngle();
+            UpdateGlobalAngle();
 
             idle();
         }
@@ -325,7 +336,7 @@ public class BlueLine extends LinearOpMode {
             wheelLB.setPower(power * 1);
 
             //update globalAngle
-            getAngle();
+            UpdateGlobalAngle();
 
             idle();
         }
@@ -339,30 +350,33 @@ public class BlueLine extends LinearOpMode {
 
 
     //imu gyro sensor
-    private double GetCorrection(){
-        double angle = getAngle();
-        double gain = .05;
-
-        if (angle == targetAngle)
-            correction = 0;
-        else
-            correction = targetAngle - angle;
-
-        correction = correction * gain;
-
-        return correction;
-    }
-
-    private double getAngle(){
+    private void UpdateGlobalAngle(){
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
         globalAngle += deltaAngle;
 
-        lastAngles = angles;
+        if(globalAngle < -180)
+            globalAngle += 360;
+        else if (globalAngle > 180)
+            globalAngle -= 360;
 
-        return globalAngle;
+        lastAngles = angles;
+    }
+    private double GetCorrection(){
+        double gain = .05;
+
+        UpdateGlobalAngle();
+
+        if (globalAngle == targetAngle)
+            correction = 0;
+        else
+            correction = targetAngle - globalAngle;
+
+        correction = correction * gain;
+
+        return correction;
     }
 
 
