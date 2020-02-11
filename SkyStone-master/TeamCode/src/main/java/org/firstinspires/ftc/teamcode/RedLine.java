@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Autonomous (name="RedLine", group="Autonomous")
 public class RedLine extends LinearOpMode {
 
+    //wheels
     //motors
     private DcMotor wheelLF;
     private DcMotor wheelRF;
@@ -32,11 +33,14 @@ public class RedLine extends LinearOpMode {
     //servos
     private Servo buildPlateServoLeft;
     private Servo buildPlateServoRight;
+    private Servo armFoldOutServo;
 
 
     //IMU
     private BNO055IMU imu;
     private Orientation lastAngles = new Orientation();
+
+    private double correction;
     private double globalAngle;
     private double targetAngle;
 
@@ -44,7 +48,7 @@ public class RedLine extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        Setup();
+        MapHardware();
 
         //wait for gyro calibration
         while (!isStopRequested() && !imu.isGyroCalibrated()) {
@@ -69,8 +73,8 @@ public class RedLine extends LinearOpMode {
     }
 
 
-    //Setup
-    private void Setup(){
+    //map hardware
+    private void MapHardware(){
         //map wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -84,14 +88,17 @@ public class RedLine extends LinearOpMode {
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
         buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
+        armFoldOutServo = hardwareMap.get(Servo.class, "armFoldOutServo");
 
         //set servo range
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
+        armFoldOutServo.scaleRange(0, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
         buildPlateServoRight.setPosition(1);
+        armFoldOutServo.setPosition(0);
 
         //imu
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -109,10 +116,10 @@ public class RedLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10, false), 0.5);
-        Turn(-90, 0.5);
-        DriveForward(CMToTicks(69, false), 0.5);
-        DriveLeft(CMToTicks(35, true),0.3);
+//        DriveForward(CMToTicks(10, false), 0.5);
+//        Turn(-90, 0.5);
+//        DriveForward(CMToTicks(69, false), 0.5);
+//        DriveLeft(CMToTicks(35, true),0.3);
     }
 
 
@@ -139,12 +146,12 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            double wheelCorrection = GetWheelCorrection();
+            correction = GetCorrection();
 
-            wheelLF.setPower(power - wheelCorrection);
-            wheelRF.setPower(power + wheelCorrection);
-            wheelRB.setPower(power + wheelCorrection);
-            wheelLB.setPower(power - wheelCorrection);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -182,12 +189,12 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            double wheelCorrection = GetWheelCorrection();
+            correction = GetCorrection();
 
-            wheelLF.setPower(-power - wheelCorrection);
-            wheelRF.setPower(-power + wheelCorrection);
-            wheelRB.setPower(-power + wheelCorrection);
-            wheelLB.setPower(-power - wheelCorrection);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -226,12 +233,12 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            double wheelCorrection = GetWheelCorrection();
+            correction = GetCorrection();
 
-            wheelLF.setPower(-power - wheelCorrection);
-            wheelRF.setPower(power + wheelCorrection);
-            wheelRB.setPower(-power + wheelCorrection);
-            wheelLB.setPower(power - wheelCorrection);
+            wheelLF.setPower(-power - correction);
+            wheelRF.setPower(power + correction);
+            wheelRB.setPower(-power + correction);
+            wheelLB.setPower(power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -269,12 +276,12 @@ public class RedLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
             // Use gyro to drive in a straight line.
-            double wheelCorrection = GetWheelCorrection();
+            correction = GetCorrection();
 
-            wheelLF.setPower(power - wheelCorrection);
-            wheelRF.setPower(-power + wheelCorrection);
-            wheelRB.setPower(power + wheelCorrection);
-            wheelLB.setPower(-power - wheelCorrection);
+            wheelLF.setPower(power - correction);
+            wheelRF.setPower(-power + correction);
+            wheelRB.setPower(power + correction);
+            wheelLB.setPower(-power - correction);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -295,24 +302,10 @@ public class RedLine extends LinearOpMode {
         double flexibility = 5;
 
         //set targetAngle
-        targetAngle += turnAmount;
+        targetAngle -= turnAmount;
 
 
         while (globalAngle < targetAngle - flexibility && opModeIsActive()){
-
-            //set power
-            wheelLF.setPower(power * 1);
-            wheelRF.setPower(power * -1);
-            wheelRB.setPower(power * -1);
-            wheelLB.setPower(power * 1);
-
-            //update globalAngle
-            UpdateGlobalAngle();
-
-            idle();
-        }
-
-        while (globalAngle > targetAngle + flexibility && opModeIsActive()){
 
             //set power
             wheelLF.setPower(power * -1);
@@ -321,7 +314,21 @@ public class RedLine extends LinearOpMode {
             wheelLB.setPower(power * -1);
 
             //update globalAngle
-            UpdateGlobalAngle();
+            getAngle();
+
+            idle();
+        }
+
+        while (globalAngle > targetAngle + flexibility && opModeIsActive()){
+
+            //set power
+            wheelLF.setPower(power * 1);
+            wheelRF.setPower(power * -1);
+            wheelRB.setPower(power * -1);
+            wheelLB.setPower(power * 1);
+
+            //update globalAngle
+            getAngle();
 
             idle();
         }
@@ -331,6 +338,34 @@ public class RedLine extends LinearOpMode {
         wheelRF.setPower(0);
         wheelRB.setPower(0);
         wheelLB.setPower(0);
+    }
+
+
+    //imu gyro sensor
+    private double GetCorrection(){
+        double angle = getAngle();
+        double gain = .05;
+
+        if (angle == targetAngle)
+            correction = 0;
+        else
+            correction = targetAngle - angle;
+
+        correction = correction * gain;
+
+        return correction;
+    }
+
+    private double getAngle(){
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
     }
 
 
@@ -360,32 +395,10 @@ public class RedLine extends LinearOpMode {
         sleep(500);
     }
 
-
-    //imu gyro sensor
-    private void UpdateGlobalAngle(){
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double angleChange = angles.firstAngle - lastAngles.firstAngle;
-
-        globalAngle += angleChange;
-
-        if(globalAngle > 180)
-            globalAngle -= 360;
-        else if (globalAngle < -180)
-            globalAngle += 360;
-
-        lastAngles = angles;
-    }
-    private double GetWheelCorrection(){
-        double gain = .05;
-        double correction = 0;
-        UpdateGlobalAngle();
-
-        if (globalAngle != targetAngle)
-            correction = globalAngle - targetAngle;
-
-        correction *= gain;
-
-        return correction;
+    private void FoldArm(boolean Down){
+        if(Down)
+            armFoldOutServo.setPosition(1);
+        else
+            armFoldOutServo.setPosition(0);
     }
 }
