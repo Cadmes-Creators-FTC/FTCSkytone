@@ -15,4 +15,14 @@ public class MathFunctions {
         return (int) ticks;
     }
 
+    public static double clambAngle(double angle){
+
+        if(angle < -180)
+            angle += 360;
+        else if(angle > 180)
+            angle -= 360;
+
+        return angle;
+    }
+
 }
