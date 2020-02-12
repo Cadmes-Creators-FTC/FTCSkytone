@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.MathFunctions;
 
 
 @SuppressWarnings({"RedundantThrows", "SameParameterValue", "unused"})
@@ -117,7 +118,7 @@ public class RobotAutonomous extends LinearOpMode {
 
     //Drive Forward with distance
     private void DriveForward(int distance, double power){
-        distance = CMToTicks(distance, false);
+        distance = MathFunctions.CMToTicks(distance, false);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -140,7 +141,7 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(power - correction);
             wheelRF.setPower(power + correction);
@@ -162,7 +163,7 @@ public class RobotAutonomous extends LinearOpMode {
     }
     //Drive Backward with distance
     private void DriveBackward(int distance, double power){
-        distance = CMToTicks(distance, false);
+        distance = MathFunctions.CMToTicks(distance, false);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -185,7 +186,7 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(-power - correction);
             wheelRF.setPower(-power + correction);
@@ -208,7 +209,7 @@ public class RobotAutonomous extends LinearOpMode {
 
     //Drive Left with distance
     private void DriveLeft(int distance, double power){
-        distance = CMToTicks(distance, true);
+        distance = MathFunctions.CMToTicks(distance, true);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -231,7 +232,7 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(-power - correction);
             wheelRF.setPower(power + correction);
@@ -253,7 +254,7 @@ public class RobotAutonomous extends LinearOpMode {
     }
     //Drive Right with distance
     private void DriveRight(int distance, double power){
-        distance = CMToTicks(distance, true);
+        distance = MathFunctions.CMToTicks(distance, true);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -276,7 +277,7 @@ public class RobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(power - correction);
             wheelRF.setPower(-power + correction);
@@ -361,7 +362,7 @@ public class RobotAutonomous extends LinearOpMode {
 
         lastAngles = angles;
     }
-    private double GetCorrection(){
+    private double GetWheelCorrection(){
         double gain = .05;
 
         UpdateGlobalAngle();
@@ -374,20 +375,6 @@ public class RobotAutonomous extends LinearOpMode {
         correction = correction * gain;
 
         return correction;
-    }
-
-
-    //convert cm to encoder ticks
-    private int CMToTicks(double CM, boolean side){
-        if(side) {
-            CM *= Math.sqrt(2);
-        }
-
-        double tickCM = 1120 / 26.928;
-        tickCM *= (100f/141f);
-        long ticks = Math.round(tickCM * CM);
-
-        return (int) ticks;
     }
 
 

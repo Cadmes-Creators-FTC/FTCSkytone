@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.MathFunctions;
 
 
 @SuppressWarnings({"RedundantThrows", "SameParameterValue", "unused"})
@@ -111,24 +112,24 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        DriveForward(CMToTicks(10, false), 0.4);
-        DriveLeft(CMToTicks(40, true), 0.4);
-        DriveForward(CMToTicks(40, false), 0.4);
-        DriveForward(CMToTicks(40, false), 0.2);
+        DriveForward(10, 0.4);
+        DriveLeft(40, 0.4);
+        DriveForward(40, 0.4);
+        DriveForward(40, 0.2);
         MoveBuildPlate(true);
-        DriveBackward(CMToTicks(80, false), 0.4);
+        DriveBackward(80, 0.4);
         Turn(-90, 0.5);
         MoveBuildPlate(false);
-        DriveBackward(CMToTicks(40, false), 0.8);
+        DriveBackward(40, 0.8);
         Turn(180, 0.5);
-        DriveForward(CMToTicks(30, false), 0.8);
-        DriveRight(CMToTicks(20, true), 0.5);
+        DriveForward(30, 0.8);
+        DriveRight(20, 0.5);
     }
 
 
     //Drive Forward with distance
     private void DriveForward(int distance, double power){
-        distance = CMToTicks(distance, false);
+        distance = MathFunctions.CMToTicks(distance, false);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -151,7 +152,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(power - correction);
             wheelRF.setPower(power + correction);
@@ -173,7 +174,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
     }
     //Drive Backward with distance
     private void DriveBackward(int distance, double power){
-        distance = CMToTicks(distance, false);
+        distance = MathFunctions.CMToTicks(distance, false);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -196,7 +197,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(-power - correction);
             wheelRF.setPower(-power + correction);
@@ -219,7 +220,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     //Drive Left with distance
     private void DriveLeft(int distance, double power){
-        distance = CMToTicks(distance, true);
+        distance = MathFunctions.CMToTicks(distance, true);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -242,7 +243,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance){
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(-power - correction);
             wheelRF.setPower(power + correction);
@@ -264,7 +265,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
     }
     //Drive Right with distance
     private void DriveRight(int distance, double power){
-        distance = CMToTicks(distance, true);
+        distance = MathFunctions.CMToTicks(distance, true);
 
         //set to run to position
         wheelLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -287,7 +288,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
         while (opModeIsActive() && wheelLFPos < distance && wheelRFPos < distance && wheelRBPos < distance && wheelLBPos < distance) {
 
             // Use gyro to drive in a straight line.
-            correction = GetCorrection();
+            correction = GetWheelCorrection();
 
             wheelLF.setPower(power - correction);
             wheelRF.setPower(-power + correction);
@@ -372,7 +373,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
         lastAngles = angles;
     }
-    private double GetCorrection(){
+    private double GetWheelCorrection(){
         double gain = .05;
 
         UpdateGlobalAngle();
@@ -385,20 +386,6 @@ public class BlueBuildPlateLine extends LinearOpMode {
         correction = correction * gain;
 
         return correction;
-    }
-
-
-    //convert cm to encoder ticks
-    private int CMToTicks(double CM, boolean side){
-        if(side) {
-            CM *= Math.sqrt(2);
-        }
-
-        double tickCM = 1120 / 26.928;
-        tickCM *= (100f/141f);
-        long ticks = Math.round(tickCM * CM);
-
-        return (int) ticks;
     }
 
 
