@@ -20,7 +20,7 @@ public class BlueBuildPlateLine extends LinearOpMode {
         telemetry.addData("State", "initializing");
         telemetry.update();
 
-        robot = new Robot();
+        robot = new Robot(hardwareMap, telemetry);
 
         //wait for gyro calibration
         while (!isStopRequested() && !robot.imu.isGyroCalibrated()) {

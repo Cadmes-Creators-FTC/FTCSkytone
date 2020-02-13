@@ -4,8 +4,10 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -13,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("WeakerAccess")
 @Disabled
-public class Robot extends OpMode {
+public class Robot {
 
     //motors
     public DcMotor wheelLF;
@@ -41,7 +43,7 @@ public class Robot extends OpMode {
     public double globalAngle;
     public double targetAngle;
 
-    public Robot(){
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry){
         //assign drive wheels
         this.wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         this.wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
@@ -100,16 +102,5 @@ public class Robot extends OpMode {
         globalAngle = MathFunctions.clambAngle(globalAngle);
 
         lastAngles = angles;
-    }
-
-
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void loop() {
-
     }
 }
