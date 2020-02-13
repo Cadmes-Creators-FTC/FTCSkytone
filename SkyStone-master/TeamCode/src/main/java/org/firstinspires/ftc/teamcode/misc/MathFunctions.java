@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.misc;
 
+@SuppressWarnings("unused")
 public class MathFunctions {
 
     //convert cm to encoder ticks

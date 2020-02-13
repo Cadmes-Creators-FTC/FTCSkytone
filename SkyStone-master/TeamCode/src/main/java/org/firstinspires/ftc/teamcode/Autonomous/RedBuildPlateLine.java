@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.Robot;
+
+import org.firstinspires.ftc.teamcode.RobotsConfigs.Robot;
 
 
 @SuppressWarnings({"RedundantThrows", "SameParameterValue", "unused", "FieldCanBeLocal"})
@@ -11,7 +12,6 @@ import org.firstinspires.ftc.teamcode.Robot;
 public class RedBuildPlateLine extends LinearOpMode {
 
     private Robot robot;
-    private RobotAutonomous autonomous;
 
 
     @Override
@@ -22,13 +22,7 @@ public class RedBuildPlateLine extends LinearOpMode {
 
         robot = new Robot(hardwareMap, telemetry);
 
-        //wait for gyro calibration
-        while (!isStopRequested() && !robot.imu.isGyroCalibrated()) {
-            sleep(50);
-            idle();
-        }
-
-        autonomous = new RobotAutonomous(robot);
+        robot.WaitForGyroCalibration();
 
 
         telemetry.addData("State", "initialized");
@@ -49,17 +43,17 @@ public class RedBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        autonomous.DriveForward(40, 0.4);
-        autonomous.DriveRight(40, 0.4);
-        autonomous.DriveForward(40, 0.4);
-        autonomous.DriveForward(40, 0.2);
-        autonomous.MoveBuildPlate(true);
-        autonomous.DriveBackward(80, 0.4);
-        autonomous.Turn(90, 0.5);
-        autonomous.MoveBuildPlate(false);
-        autonomous.DriveBackward(40, 0.8);
-        autonomous.Turn(-180, 0.5);
-        autonomous.DriveForward(30, 0.8);
-        autonomous.DriveLeft(20, 0.5);
+        robot.DriveForward(40, 0.4);
+        robot.DriveRight(40, 0.4);
+        robot.DriveForward(40, 0.4);
+        robot.DriveForward(40, 0.2);
+        robot.BuildPlateHooksDown();
+        robot.DriveBackward(80, 0.4);
+        robot.Turn(90, 0.5);
+        robot.BuildPlateHooksUp();
+        robot.DriveBackward(40, 0.8);
+        robot.Turn(-180, 0.5);
+        robot.DriveForward(30, 0.8);
+        robot.DriveLeft(20, 0.5);
     }
 }
