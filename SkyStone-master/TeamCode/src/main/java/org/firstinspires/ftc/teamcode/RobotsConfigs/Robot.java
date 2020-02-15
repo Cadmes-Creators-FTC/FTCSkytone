@@ -218,10 +218,10 @@ public class Robot {
             // Use gyro to drive in a straight line.
             double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(power - wheelCorrection);
-            wheelRF.setPower(power + wheelCorrection);
-            wheelRB.setPower(power + wheelCorrection);
-            wheelLB.setPower(power - wheelCorrection);
+            wheelLF.setPower(power + wheelCorrection);
+            wheelRF.setPower(power - wheelCorrection);
+            wheelRB.setPower(power - wheelCorrection);
+            wheelLB.setPower(power + wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -262,10 +262,10 @@ public class Robot {
             // Use gyro to drive in a straight line.
             double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(-power - wheelCorrection);
-            wheelRF.setPower(-power + wheelCorrection);
-            wheelRB.setPower(-power + wheelCorrection);
-            wheelLB.setPower(-power - wheelCorrection);
+            wheelLF.setPower(-power + wheelCorrection);
+            wheelRF.setPower(-power - wheelCorrection);
+            wheelRB.setPower(-power - wheelCorrection);
+            wheelLB.setPower(-power + wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -307,10 +307,10 @@ public class Robot {
             // Use gyro to drive in a straight line.
             double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(-power - wheelCorrection);
-            wheelRF.setPower(power + wheelCorrection);
-            wheelRB.setPower(-power + wheelCorrection);
-            wheelLB.setPower(power - wheelCorrection);
+            wheelLF.setPower(-power + wheelCorrection);
+            wheelRF.setPower(power - wheelCorrection);
+            wheelRB.setPower(-power - wheelCorrection);
+            wheelLB.setPower(power + wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -351,10 +351,10 @@ public class Robot {
             // Use gyro to drive in a straight line.
             double wheelCorrection = GetWheelCorrection();
 
-            wheelLF.setPower(power - wheelCorrection);
-            wheelRF.setPower(-power + wheelCorrection);
-            wheelRB.setPower(power + wheelCorrection);
-            wheelLB.setPower(-power - wheelCorrection);
+            wheelLF.setPower(power + wheelCorrection);
+            wheelRF.setPower(-power - wheelCorrection);
+            wheelRB.setPower(power - wheelCorrection);
+            wheelLB.setPower(-power + wheelCorrection);
 
             //set wheelPositions
             wheelLFPos = Math.abs(wheelLF.getCurrentPosition());
@@ -374,12 +374,12 @@ public class Robot {
         double flexibility = 5;
 
         //set targetAngle
-        targetAngle -= turnAmount;
+        targetAngle += turnAmount;
 
         targetAngle = MathFunctions.clambAngleDegrees(targetAngle);
 
 
-        while (globalAngle < targetAngle - flexibility){
+        while (globalAngle > targetAngle - flexibility){
 
             //set power
             wheelLF.setPower(power * -1);
@@ -391,7 +391,7 @@ public class Robot {
             UpdateGlobalAngle();
         }
 
-        while (globalAngle > targetAngle + flexibility){
+        while (globalAngle < targetAngle + flexibility){
 
             //set power
             wheelLF.setPower(power * 1);
