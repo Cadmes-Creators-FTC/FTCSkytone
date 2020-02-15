@@ -84,9 +84,9 @@ public class MainTeleop extends LinearOpMode {
         joyY *= -1;
 
         //robot drive control
-        if (gamepad1.x && robot.drive_Controler == false)
+        if (gamepad1.x )
             robot.drive_Controler = true;
-        else if (gamepad1.x && robot.drive_Controler)
+        else if (gamepad1.a )
             robot.drive_Controler = false;
 
 
