@@ -16,12 +16,22 @@ public class MathFunctions {
         return (int) ticks;
     }
 
-    public static double clambAngle(double angle){
+    public static double clambAngleDegrees(double angle){
 
-        if(angle < -180)
+        while (angle < -180)
             angle += 360;
-        else if(angle > 180)
+        while (angle > 180)
             angle -= 360;
+
+        return angle;
+    }
+
+    public static double clambAngleRadians(double angle){
+
+        while (angle < -Math.PI)
+            angle += Math.PI * 2;
+        while (angle > Math.PI)
+            angle -= Math.PI * 2;
 
         return angle;
     }

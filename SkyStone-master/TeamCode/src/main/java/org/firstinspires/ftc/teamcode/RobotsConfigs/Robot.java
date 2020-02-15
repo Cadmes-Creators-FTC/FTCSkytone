@@ -117,10 +117,11 @@ public class Robot {
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+        deltaAngle *= -1;
 
         globalAngle += deltaAngle;
 
-        globalAngle = MathFunctions.clambAngle(globalAngle);
+        globalAngle = MathFunctions.clambAngleDegrees(globalAngle);
 
         lastAngles = angles;
     }
@@ -377,7 +378,7 @@ public class Robot {
         //set targetAngle
         targetAngle -= turnAmount;
 
-        targetAngle = MathFunctions.clambAngle(targetAngle);
+        targetAngle = MathFunctions.clambAngleDegrees(targetAngle);
 
 
         while (globalAngle < targetAngle - flexibility){

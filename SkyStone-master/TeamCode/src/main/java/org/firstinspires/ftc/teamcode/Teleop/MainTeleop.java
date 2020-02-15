@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.RobotsConfigs.Robot;
+import org.firstinspires.ftc.teamcode.misc.MathFunctions;
 
 
 @SuppressWarnings({"FieldCanBeLocal"})
@@ -78,20 +79,46 @@ public class MainTeleop extends LinearOpMode {
         double joyY = gamepad1.left_stick_y;
         double joyR = gamepad1.right_stick_x;
 
+        joyY *= -1;
+
+        double robotXMovement = joyX;
+        double robotYMovement = joyY;
+
+        if(joyX != 0 || joyY != 0){
+            robot.UpdateGlobalAngle();
+
+            double joyAngle = Math.atan2(joyY, joyX) * -1 + Math.PI / 2;
+            joyAngle = MathFunctions.clambAngleRadians(joyAngle);
+
+            telemetry.addData("joyAngle", Math.toDegrees(joyAngle));
+
+            double robotAngle = Math.toRadians(robot.globalAngle);
+            double robotMoveAngle = joyAngle - robotAngle;
+            robotMoveAngle = MathFunctions.clambAngleRadians(robotMoveAngle);
+            telemetry.addData("robotAngle", robot.globalAngle);
+            telemetry.addData("robotMoveAngle", Math.toDegrees(robotMoveAngle));
+
+            robotXMovement = Math.sin(robotMoveAngle);
+            robotYMovement = Math.cos(robotMoveAngle);
+            telemetry.addData("robotXMovement", Math.toDegrees(robotXMovement));
+            telemetry.addData("robotYMovement", Math.toDegrees(robotYMovement));
+            telemetry.update();
+        }
+
         double inputLF = 0;
         double inputRF = 0;
         double inputLB = 0;
         double inputRB = 0;
 
-        inputLF += joyX;
-        inputRF -= joyX;
-        inputRB += joyX;
-        inputLB -= joyX;
+        inputLF += robotXMovement;
+        inputRF -= robotXMovement;
+        inputRB += robotXMovement;
+        inputLB -= robotXMovement;
 
-        inputLF -= joyY;
-        inputRF -= joyY;
-        inputRB -= joyY;
-        inputLB -= joyY;
+        inputLF += robotYMovement;
+        inputRF += robotYMovement;
+        inputRB += robotYMovement;
+        inputLB += robotYMovement;
 
         inputLF += joyR;
         inputRF -= joyR;
