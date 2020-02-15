@@ -82,7 +82,7 @@ public class Robot {
         buildPlateServoLeft.scaleRange(.5, 1);
         buildPlateServoRight.scaleRange(0, .5);
         dropCapStoneServo.scaleRange(.2, .7);
-        zoneReachArmServo.scaleRange(0, 1);
+        zoneReachArmServo.scaleRange(0.1, 1);
 
         //set servo to default position
         buildPlateServoLeft.setPosition(0);
@@ -169,14 +169,12 @@ public class Robot {
 
 
     //capstoneDropper
-    public void DropCapstone(){
+    public void DropCapstone() throws InterruptedException{
         //drop capstone
         dropCapStoneServo.setPosition(0);
 
         //wait for being dropped
-        while (dropCapStoneServo.getPosition() != 0){
-            //wait
-        }
+        Thread.sleep(500);
 
         //turn servo back
         dropCapStoneServo.setPosition(1);
