@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.RobotsConfigs.Robot;
 
 
-@SuppressWarnings({"RedundantThrows", "FieldCanBeLocal"})
+@SuppressWarnings({"FieldCanBeLocal"})
 @TeleOp(name = "Main_Robot", group = "TeleOp")
 public class MainTeleop extends LinearOpMode {
 
@@ -33,11 +33,7 @@ public class MainTeleop extends LinearOpMode {
         while (opModeIsActive()){
 
             //drive and turn
-            double joyX = gamepad1.left_stick_x;
-            double joyY = gamepad1.left_stick_y;
-            double joyR = gamepad1.right_stick_x;
-
-            robot.DriveWithController(joyX, joyY, joyR);
+            DriveWithController();
 
 
             //turn intake wheels
@@ -74,5 +70,42 @@ public class MainTeleop extends LinearOpMode {
 
         telemetry.addData("State", "Disabled");
         telemetry.update();
+    }
+
+    private void DriveWithController(){
+
+        double joyX = gamepad1.left_stick_x;
+        double joyY = gamepad1.left_stick_y;
+        double joyR = gamepad1.right_stick_x;
+
+        double inputLF = 0;
+        double inputRF = 0;
+        double inputLB = 0;
+        double inputRB = 0;
+
+        inputLF += joyX;
+        inputRF -= joyX;
+        inputRB += joyX;
+        inputLB -= joyX;
+
+        inputLF -= joyY;
+        inputRF -= joyY;
+        inputRB -= joyY;
+        inputLB -= joyY;
+
+        inputLF += joyR;
+        inputRF -= joyR;
+        inputRB -= joyR;
+        inputLB += joyR;
+
+        inputLF = Math.pow(inputLF, 3);
+        inputRF = Math.pow(inputRF, 3);
+        inputRB = Math.pow(inputRB, 3);
+        inputLB = Math.pow(inputLB, 3);
+
+        robot.wheelLF.setPower(inputLF);
+        robot.wheelRF.setPower(inputRF);
+        robot.wheelRB.setPower(inputRB);
+        robot.wheelLB.setPower(inputLB);
     }
 }

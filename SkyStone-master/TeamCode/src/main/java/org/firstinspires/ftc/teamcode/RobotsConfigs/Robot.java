@@ -141,36 +141,6 @@ public class Robot {
 
 
 
-    //teleop driving
-    public void DriveWithController(double joyX, double joyY, double joyR){
-        double inputLF = 0;
-        double inputRF = 0;
-        double inputLB = 0;
-        double inputRB = 0;
-
-        inputLF += joyX;
-        inputRF -= joyX;
-        inputRB += joyX;
-        inputLB -= joyX;
-
-        inputLF -= joyY;
-        inputRF -= joyY;
-        inputRB -= joyY;
-        inputLB -= joyY;
-
-        inputLF += joyR;
-        inputRF -= joyR;
-        inputRB -= joyR;
-        inputLB += joyR;
-
-        wheelLF.setPower(Math.pow(inputLF, 3));
-        wheelRF.setPower(Math.pow(inputRF, 3));
-        wheelRB.setPower(Math.pow(inputRB, 3));
-        wheelLB.setPower(Math.pow(inputLB, 3));
-    }
-
-
-
     //buildPlateHooks
     public void BuildPlateHooksDown(){
         buildPlateServoLeft.setPosition(1);
