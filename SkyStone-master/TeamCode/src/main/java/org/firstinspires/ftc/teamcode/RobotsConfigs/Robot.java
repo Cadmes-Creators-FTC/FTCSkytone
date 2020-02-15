@@ -35,6 +35,9 @@ public class Robot {
     public double wheelRBPos;
     public double wheelLBPos;
 
+    //driving with controller
+    public boolean drive_Controler;
+
     //servos
     public Servo buildPlateServoLeft;
     public Servo buildPlateServoRight;
@@ -89,6 +92,8 @@ public class Robot {
         buildPlateServoRight.setPosition(1);
         dropCapStoneServo.setPosition(1);
         zoneReachArmServo.setPosition(0);
+
+
 
         //imu
         imu = hardwareMap.get(BNO055IMU.class, "imu");

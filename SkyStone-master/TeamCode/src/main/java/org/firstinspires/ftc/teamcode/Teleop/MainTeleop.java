@@ -67,6 +67,8 @@ public class MainTeleop extends LinearOpMode {
 
             if(gamepad2.left_bumper)
                 robot.ZoneReachArmIn();
+
+
         }
 
         telemetry.addData("State", "Disabled");
@@ -81,10 +83,18 @@ public class MainTeleop extends LinearOpMode {
 
         joyY *= -1;
 
+        //robot drive control
+        if (gamepad1.x && robot.drive_Controler == false)
+            robot.drive_Controler = true;
+        else if (gamepad1.x && robot.drive_Controler)
+            robot.drive_Controler = false;
+
+
+
         double robotXMovement = joyX;
         double robotYMovement = joyY;
 
-        if(joyX != 0 || joyY != 0){
+        if(robot.drive_Controler && (joyX != 0 || joyY != 0)){
             robot.UpdateGlobalAngle();
 
             double joyAngle = Math.atan2(joyY, joyX) * -1 + Math.PI / 2;
