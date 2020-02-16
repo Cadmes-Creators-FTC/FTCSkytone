@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.misc.MathFunctions;
 public class MainTeleop extends LinearOpMode {
 
     private Robot robot;
+    private boolean headlessDrive;
 
     @Override
     public void runOpMode () throws InterruptedException{
@@ -19,17 +20,21 @@ public class MainTeleop extends LinearOpMode {
         telemetry.addData("State", "initializing");
         telemetry.update();
 
+        //initialize robot hardware
         robot = new Robot(hardwareMap, telemetry);
 
+        telemetry.addData("State", "initialized");
+        telemetry.addData("imu calibration state: ", "calibrating");
+        telemetry.update();
+
+        //wait for imu to calibrate
         robot.WaitForGyroCalibration();
 
         telemetry.addData("State", "initialized");
+        telemetry.addData("imu calibration state: ", "calibrated");
         telemetry.update();
 
         waitForStart();
-
-        telemetry.addData("State", "Running");
-        telemetry.update();
 
         while (opModeIsActive()){
 
@@ -61,88 +66,100 @@ public class MainTeleop extends LinearOpMode {
                 robot.DropCapstone();
 
 
-            //fol arm out
+            //fold arm out
             if(gamepad2.right_bumper)
                 robot.ZoneReachArmOut();
 
             if(gamepad2.left_bumper)
                 robot.ZoneReachArmIn();
 
-
         }
-
-        telemetry.addData("State", "Disabled");
-        telemetry.update();
     }
 
-    private void DriveWithController(){
 
+    private void DriveWithController(){
+        //get joystick input
         double joyX = gamepad1.left_stick_x;
         double joyY = gamepad1.left_stick_y;
         double joyR = gamepad1.right_stick_x;
 
+        //reverse y joystick
         joyY *= -1;
 
-        //robot drive control
-        if (gamepad1.x )
-            robot.drive_Controler = true;
-        else if (gamepad1.a )
-            robot.drive_Controler = false;
+
+        //headless drive switch
+        if (gamepad1.x)
+            headlessDrive = true;
+        else if (gamepad1.a)
+            headlessDrive = false;
+
+        //reset forward
+        if(gamepad1.dpad_down)
+            robot.ResetGlobalAngle();
 
 
-
+        //create movement variables
         double robotXMovement = joyX;
         double robotYMovement = joyY;
 
-        if(robot.drive_Controler && (joyX != 0 || joyY != 0)){
+        //if headless drive is on
+        if(headlessDrive && (joyX != 0 || joyY != 0)){
+            //update robotAngle
             robot.UpdateGlobalAngle();
 
+            //get joystick angel in radians
             double joyAngle = Math.atan2(joyY, joyX) * -1 + Math.PI / 2;
             joyAngle = MathFunctions.clambAngleRadians(joyAngle);
 
-            telemetry.addData("joyAngle", Math.toDegrees(joyAngle));
-
+            //get the angle the robot should move in
             double robotAngle = Math.toRadians(robot.globalAngle);
             double robotMoveAngle = joyAngle - robotAngle;
             robotMoveAngle = MathFunctions.clambAngleRadians(robotMoveAngle);
-            telemetry.addData("robotAngle", robot.globalAngle);
-            telemetry.addData("robotMoveAngle", Math.toDegrees(robotMoveAngle));
 
+            //get the x and y movement values
             robotXMovement = Math.sin(robotMoveAngle);
             robotYMovement = Math.cos(robotMoveAngle);
-            telemetry.addData("robotXMovement", Math.toDegrees(robotXMovement));
-            telemetry.addData("robotYMovement", Math.toDegrees(robotYMovement));
-            telemetry.update();
+
+            //still use the speed
+            robotXMovement *= joyX;
+            robotYMovement *= joyY;
         }
 
-        double inputLF = 0;
-        double inputRF = 0;
-        double inputLB = 0;
-        double inputRB = 0;
 
-        inputLF += robotXMovement;
-        inputRF -= robotXMovement;
-        inputRB += robotXMovement;
-        inputLB -= robotXMovement;
+        //create motor power variables
+        double LFPower = 0;
+        double RFPower = 0;
+        double RBPower = 0;
+        double LBPower = 0;
 
-        inputLF += robotYMovement;
-        inputRF += robotYMovement;
-        inputRB += robotYMovement;
-        inputLB += robotYMovement;
+        //add x movement
+        LFPower += robotXMovement;
+        RFPower -= robotXMovement;
+        RBPower += robotXMovement;
+        LBPower -= robotXMovement;
 
-        inputLF += joyR;
-        inputRF -= joyR;
-        inputRB -= joyR;
-        inputLB += joyR;
+        //add y movement
+        LFPower += robotYMovement;
+        RFPower += robotYMovement;
+        RBPower += robotYMovement;
+        LBPower += robotYMovement;
 
-        inputLF = Math.pow(inputLF, 3);
-        inputRF = Math.pow(inputRF, 3);
-        inputRB = Math.pow(inputRB, 3);
-        inputLB = Math.pow(inputLB, 3);
+        //add rotation
+        LFPower += joyR;
+        RFPower -= joyR;
+        RBPower -= joyR;
+        LBPower += joyR;
 
-        robot.wheelLF.setPower(inputLF);
-        robot.wheelRF.setPower(inputRF);
-        robot.wheelRB.setPower(inputRB);
-        robot.wheelLB.setPower(inputLB);
+        //smooth out the acceleration
+        LFPower = Math.pow(LFPower, 3);
+        RFPower = Math.pow(RFPower, 3);
+        RBPower = Math.pow(RBPower, 3);
+        LBPower = Math.pow(LBPower, 3);
+
+        //set motor power
+        robot.wheelLF.setPower(LFPower);
+        robot.wheelRF.setPower(RFPower);
+        robot.wheelRB.setPower(RBPower);
+        robot.wheelLB.setPower(LBPower);
     }
 }

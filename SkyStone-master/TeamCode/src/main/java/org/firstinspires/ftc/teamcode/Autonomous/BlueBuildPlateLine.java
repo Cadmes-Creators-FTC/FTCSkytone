@@ -16,25 +16,27 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException{
-
         telemetry.addData("State", "initializing");
         telemetry.update();
 
+        //initialize robot hardware
         robot = new Robot(hardwareMap, telemetry);
 
+        telemetry.addData("State", "initialized");
+        telemetry.addData("imu calibration state: ", "calibrating");
+        telemetry.update();
+
+        //wait for imu to calibrate
         robot.WaitForGyroCalibration();
 
-
         telemetry.addData("State", "initialized");
+        telemetry.addData("imu calibration state: ", "calibrated");
         telemetry.update();
 
-        //wait for pressing play
+        //wait for start button to be pressed
         waitForStart();
 
-        telemetry.addData("State", "Running");
-        telemetry.update();
-
-        //if on start autonomous
+        //start autonomous
         AutonomousSequence();
 
         telemetry.addData("State", "Done");
@@ -43,17 +45,17 @@ public class BlueBuildPlateLine extends LinearOpMode {
 
     //autonomous sequence
     private void AutonomousSequence(){
-        robot.DriveForward(10, 0.4);
-        robot.DriveLeft(40, 0.4);
         robot.DriveForward(40, 0.4);
+        robot.DriveLeft(40, 0.4);
+        robot.DriveForward(20, 0.4);
         robot.DriveForward(40, 0.2);
         robot.BuildPlateHooksDown();
-        robot.DriveBackward(80, 0.4);
+        robot.DriveBackward(90, 0.4);
         robot.Turn(-90, 0.5);
         robot.BuildPlateHooksUp();
-        robot.DriveBackward(40, 0.8);
-        robot.Turn(180, 0.5);
-        robot.DriveForward(30, 0.8);
-        robot.DriveRight(20, 0.5);
+        robot.DriveBackward(40, 0.3);
+        robot.Turn(90, 0.5);
+        robot.DriveRight(50, 0.3);
+        robot.DriveBackward(20, 0.3);
     }
 }

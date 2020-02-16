@@ -16,25 +16,27 @@ public class BlueLine extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException{
-
         telemetry.addData("State", "initializing");
         telemetry.update();
 
+        //initialize robot hardware
         robot = new Robot(hardwareMap, telemetry);
 
+        telemetry.addData("State", "initialized");
+        telemetry.addData("imu calibration state: ", "calibrating");
+        telemetry.update();
+
+        //wait for imu to calibrate
         robot.WaitForGyroCalibration();
 
-
         telemetry.addData("State", "initialized");
+        telemetry.addData("imu calibration state: ", "calibrated");
         telemetry.update();
 
-        //wait for pressing play
+        //wait for start button to be pressed
         waitForStart();
 
-        telemetry.addData("State", "Running");
-        telemetry.update();
-
-        //if on start autonomous
+        //start autonomous
         AutonomousSequence();
 
         telemetry.addData("State", "Done");
@@ -44,8 +46,7 @@ public class BlueLine extends LinearOpMode {
     //autonomous sequence
     private void AutonomousSequence(){
         robot.DriveForward(10, 0.5);
-        robot.Turn(90, 0.5);
-        robot.DriveForward(70, 0.5);
-        robot.DriveRight(35,0.3);
+        robot.DriveRight(90,0.3);
+        robot.DriveBackward(20, 0.2);
     }
 }

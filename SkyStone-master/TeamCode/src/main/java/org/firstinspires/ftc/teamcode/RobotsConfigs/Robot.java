@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.misc.MathFunctions;
 
-@SuppressWarnings({"WeakerAccess", "unused", "StatementWithEmptyBody"})
+@SuppressWarnings({"WeakerAccess", "unused"})
 @Disabled
 public class Robot {
 
@@ -35,9 +35,6 @@ public class Robot {
     public double wheelRBPos;
     public double wheelLBPos;
 
-    //driving with controller
-    public boolean drive_Controler;
-
     //servos
     public Servo buildPlateServoLeft;
     public Servo buildPlateServoRight;
@@ -58,22 +55,20 @@ public class Robot {
         hardwareMap = inputHardwareMap;
         telemetry = inputTelemetry;
 
-        //assign drive wheels
+
+        //assign wheels
         wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
         wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
         wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
         wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
-
-        //reverse drive wheels
-        wheelLF.setDirection(DcMotor.Direction.REVERSE);
-        wheelLB.setDirection(DcMotor.Direction.REVERSE);
-
-        //assign intake wheels
         intakeWheelLeft = hardwareMap.get(DcMotor.class, "IntakeWheelLeft");
         intakeWheelRight = hardwareMap.get(DcMotor.class, "IntakeWheelRight");
 
-        //reverse intake wheels
+        //reverse wheels
+        wheelLF.setDirection(DcMotor.Direction.REVERSE);
+        wheelLB.setDirection(DcMotor.Direction.REVERSE);
         intakeWheelRight.setDirection(DcMotor.Direction.REVERSE);
+
 
         //assign servos
         buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
@@ -94,15 +89,13 @@ public class Robot {
         zoneReachArmServo.setPosition(0);
 
 
-
-        //imu
+        //assign imu
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled = false;
 
         imu.initialize(parameters);
@@ -130,6 +123,12 @@ public class Robot {
 
         lastAngles = angles;
     }
+    public void ResetGlobalAngle(){
+        globalAngle = 0;
+        targetAngle = 0;
+        lastAngles = new Orientation();
+    }
+
     private double GetWheelCorrection(){
         double gain = .05;
 
