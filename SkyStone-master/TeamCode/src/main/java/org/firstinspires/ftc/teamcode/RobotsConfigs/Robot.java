@@ -57,36 +57,36 @@ public class Robot {
 
 
         //assign wheels
-        wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
-        wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
-        wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
-        wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
-        intakeWheelLeft = hardwareMap.get(DcMotor.class, "IntakeWheelLeft");
-        intakeWheelRight = hardwareMap.get(DcMotor.class, "IntakeWheelRight");
-
-        //reverse wheels
-        wheelLF.setDirection(DcMotor.Direction.REVERSE);
-        wheelLB.setDirection(DcMotor.Direction.REVERSE);
-        intakeWheelRight.setDirection(DcMotor.Direction.REVERSE);
-
-
-        //assign servos
-        buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
-        buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
-        dropCapStoneServo = hardwareMap.get(Servo.class, "DropCapStoneServo");
-        zoneReachArmServo = hardwareMap.get(Servo.class, "armFoldOutServo");
-
-        //set servo range
-        buildPlateServoLeft.scaleRange(.5, 1);
-        buildPlateServoRight.scaleRange(0, .5);
-        dropCapStoneServo.scaleRange(.2, .7);
-        zoneReachArmServo.scaleRange(0.1, 1);
-
-        //set servo to default position
-        buildPlateServoLeft.setPosition(0);
-        buildPlateServoRight.setPosition(1);
-        dropCapStoneServo.setPosition(1);
-        zoneReachArmServo.setPosition(0);
+//        wheelLF = hardwareMap.get(DcMotor.class, "WheelLF");
+//        wheelRF = hardwareMap.get(DcMotor.class, "WheelRF");
+//        wheelRB = hardwareMap.get(DcMotor.class, "WheelRB");
+//        wheelLB = hardwareMap.get(DcMotor.class, "WheelLB");
+//        intakeWheelLeft = hardwareMap.get(DcMotor.class, "IntakeWheelLeft");
+//        intakeWheelRight = hardwareMap.get(DcMotor.class, "IntakeWheelRight");
+//
+//        //reverse wheels
+//        wheelLF.setDirection(DcMotor.Direction.REVERSE);
+//        wheelLB.setDirection(DcMotor.Direction.REVERSE);
+//        intakeWheelRight.setDirection(DcMotor.Direction.REVERSE);
+//
+//
+//        //assign servos
+//        buildPlateServoLeft = hardwareMap.get(Servo.class, "BuildPlateServoLeft");
+//        buildPlateServoRight = hardwareMap.get(Servo.class, "BuildPlateServoRight");
+//        dropCapStoneServo = hardwareMap.get(Servo.class, "DropCapStoneServo");
+//        zoneReachArmServo = hardwareMap.get(Servo.class, "armFoldOutServo");
+//
+//        //set servo range
+//        buildPlateServoLeft.scaleRange(.5, 1);
+//        buildPlateServoRight.scaleRange(0, .5);
+//        dropCapStoneServo.scaleRange(.2, .7);
+//        zoneReachArmServo.scaleRange(0.1, 1);
+//
+//        //set servo to default position
+//        buildPlateServoLeft.setPosition(0);
+//        buildPlateServoRight.setPosition(1);
+//        dropCapStoneServo.setPosition(1);
+//        zoneReachArmServo.setPosition(0);
 
 
         //assign imu
@@ -99,6 +99,20 @@ public class Robot {
         parameters.loggingEnabled = false;
 
         imu.initialize(parameters);
+
+
+        wheelLF = hardwareMap.get(DcMotor.class, "LFWheel");
+        wheelRF = hardwareMap.get(DcMotor.class, "RFWheel");
+        wheelRB = hardwareMap.get(DcMotor.class, "RBWheel");
+        wheelLB = hardwareMap.get(DcMotor.class, "LBWheel");
+
+        wheelLF.setDirection(DcMotor.Direction.REVERSE);
+        wheelLB.setDirection(DcMotor.Direction.REVERSE);
+
+        wheelLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wheelRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wheelRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wheelLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
 
