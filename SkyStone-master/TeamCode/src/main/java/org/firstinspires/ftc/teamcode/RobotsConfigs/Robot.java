@@ -115,8 +115,6 @@ public class Robot {
         wheelLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-
-
     //imu
     public void WaitForGyroCalibration() throws InterruptedException{
         //wait for gyro calibration
